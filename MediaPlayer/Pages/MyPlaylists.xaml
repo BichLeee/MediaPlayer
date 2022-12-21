@@ -1,0 +1,50 @@
+﻿<Page x:Class="MediaPlayer.Pages.MyPlaylists"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MediaPlayer.Pages"
+      xmlns:u="clr-namespace:Ulti;assembly=Ulti"
+
+      mc:Ignorable="d" 
+      d:DesignHeight="520" d:DesignWidth="670"
+      Title="MyPlaylists" Loaded="Page_Loaded">
+
+    <Page.Resources>
+        <u:RelativeToAbsoluteConverter x:Key="absoluteConverter"/>
+    </Page.Resources>
+
+    <ListView Name="PLaylistsListView">
+        <ListView.Resources>
+            <ContextMenu x:Key="listViewContextMenu">
+                <MenuItem Header="Delete" Click="MenuItem_Click">
+                    <MenuItem.Icon>
+                        <Image Source="/Images/bin.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </ContextMenu>
+        </ListView.Resources>
+        <ListView.ItemContainerStyle>
+            <Style TargetType="ListViewItem">
+                <Setter Property="ContextMenu" Value="{StaticResource listViewContextMenu}"/>
+            </Style>
+        </ListView.ItemContainerStyle>
+        <ListView.ItemsPanel>
+            <ItemsPanelTemplate>
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10"/>
+            </ItemsPanelTemplate>
+        </ListView.ItemsPanel>
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <StackPanel Orientation="Horizontal" Width="600" Height="100" VerticalAlignment="Center" HorizontalAlignment="Center" Background="#a1e7f0" MouseDown="StackPanel_MouseDown" Margin="0,5">
+                    <Image Width="80" Height="70" Margin="10,0,0,0" Source="{Binding listSongs[0].image,Converter={StaticResource absoluteConverter}}"/>
+                    <TextBlock VerticalAlignment="Center" Margin="10,5,0,0">
+                                <Run Text="{Binding name}" Foreground="black" FontSize="14" FontWeight="DemiBold"/>
+                                    <LineBreak/>
+                                <Run Text="{Binding date}"  Foreground="#aaaeb6" FontSize="12"/>
+                    </TextBlock>
+                </StackPanel>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+</Page>
