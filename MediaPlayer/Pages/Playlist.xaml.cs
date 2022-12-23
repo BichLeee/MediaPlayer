@@ -25,9 +25,9 @@ namespace MediaPlayer.Pages
     {
         public Playlist(IPlaylist playlist)
         {
+
             InitializeComponent();
 
-            
             DataContext = playlist;
             dataGrid.ItemsSource = playlist.listSongs;
         }
