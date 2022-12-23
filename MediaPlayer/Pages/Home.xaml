@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:MediaPlayer.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="500" d:DesignWidth="670"
-      Title="Home">
+      Title="Home" Loaded="PageLoaded" >
 
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
         <Border BorderThickness="1" CornerRadius="10" BorderBrush="#13343d">

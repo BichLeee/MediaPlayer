@@ -30,15 +30,19 @@ namespace MediaPlayer
 
             sidebar.SelectedIndex= 0;
         }
-
+        string a = "trinh";
         private void sidebar_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selected = sidebar.SelectedItem as NavButton;
-
-            navframe!.Navigate(selected.Navlink);
+            navframe!.NavigationService.Navigate(selected.Navlink,a);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void play_pauseHandeler(object sender, RoutedEventArgs e)
         {
 
         }

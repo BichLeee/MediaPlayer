@@ -41,5 +41,15 @@ namespace MediaPlayer.Pages
         {
 
         }
+
+        private void addMediaFile(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void deleteMediaFile(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

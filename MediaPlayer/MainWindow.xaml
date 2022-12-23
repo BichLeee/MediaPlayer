@@ -42,15 +42,15 @@
                     <Button Template="{DynamicResource ButtonTemplate1}" Style="{DynamicResource ButtonStyle}" Height="15" Width="15" Margin="20,0,20,0" Padding="1">
                         <Path Stretch="Uniform" Fill="#00bdd6" Data="M6 6h2v12H6zm12 12V6l-8.5 6l8.5 6zm-2-3.86L12.97 12L16 9.86v4.28z"/>
                     </Button>
-                    <Button Style="{DynamicResource ButtonStyle}"  Margin="0,5,0,5">
+                    <Button Style="{DynamicResource ButtonStyle}" Click="play_pauseHandeler">
 
                         <Button.Template>
-                            <ControlTemplate TargetType="Button">
+                            <ControlTemplate TargetType="{x:Type Button}">
                                 <Border Background="#00bdd6" CornerRadius="100" Width="50" Height="50">
-                                    <Path x:Name="playbuttonpath_footer" Height="15" Width="15" Stretch="Uniform" Fill="White" Data="M6 5h4v14H6zm8 0h4v14h-4z"/>
+                                    <Path x:Name="playbuttonpath_footer" Height="15" Width="15" Stretch="Uniform" Fill="White" Data="M6 5h4v14H6zm8 0h4v14h-4z" Margin="18,18,18,18"/>
                                 </Border>
                                 <ControlTemplate.Triggers>
-                                    <Trigger Property="Button.IsMouseOver" Value="True">
+                                    <Trigger Property="IsMouseOver" Value="True">
                                         <Setter TargetName="playbuttonpath_footer" Property="Data" Value="M4610 6399 l0 -2881 43 25 c195 114 4144 2392 4494 2593 339 194 448 262 440 270 -7 7 -743 434 -1637 949 -894 516 -2001 1155 -2460 1420 -459 265 -845 487 -857 494 l-23 12 0 -2882z"/>
                                     </Trigger>
                                 </ControlTemplate.Triggers>

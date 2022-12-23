@@ -18,11 +18,24 @@ namespace MediaPlayer.Pages
     /// <summary>
     /// Interaction logic for Home.xaml
     /// </summary>
+    
+    
+
     public partial class Home : Page
     {
         public Home()
         {
             InitializeComponent();
+        }
+
+        private void PageLoaded(object sender, RoutedEventArgs e)
+        {
+            NavigationService.LoadCompleted += NavigationService_LoadCompleted;
+        }
+
+        private void NavigationService_LoadCompleted(object sender, NavigationEventArgs e)
+        {
+            var a = e.ExtraData.ToString();
         }
     }
 }

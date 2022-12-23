@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace Interface
 {
-    public class ISong
+    public class ISong : INotifyPropertyChanged, ICloneable
+
     {
         public string title { get; set; }
 
@@ -13,9 +15,17 @@ namespace Interface
         public string image { get; set; }
 
         public double time { get; set; }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public object Clone()
+        {
+            return title.Clone();
+        }
     }
 
-    public class IPlaylist   {  
+    public class IPlaylist : INotifyPropertyChanged, ICloneable
+    {  
 
         public string name { get; set; }
 
@@ -25,12 +35,28 @@ namespace Interface
 
         public History history { get; set; }
 
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public object Clone()
+        {
+            return MemberwiseClone();
+
+        }
+
     }
 
-    public class History
+    public class History:INotifyPropertyChanged, ICloneable
     {
         public ISong song { get; set; }
 
         public double time { get; set; }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public object Clone()
+        {
+            return MemberwiseClone();
+
+        }
     }
 }
