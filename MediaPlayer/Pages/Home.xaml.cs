@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -22,20 +23,43 @@ namespace MediaPlayer.Pages
     
 
     public partial class Home : Page
-    {
-        public Home()
+    { 
+        public string currentPlaying { get; set; }
+
+
+        public Home(string _currentPlaying)
         {
             InitializeComponent();
+            currentPlaying = _currentPlaying;
+            DataContext = currentPlaying;
+
+        }
+        public void InitPlayer()
+        {
+            player.Source = new Uri(currentPlaying, UriKind.Absolute);
+            player.Play();
+            player.Stop();
+
         }
 
         private void PageLoaded(object sender, RoutedEventArgs e)
         {
-            NavigationService.LoadCompleted += NavigationService_LoadCompleted;
+
+                
+            
+            
+        }
+        
+        public void play()
+        {
+            player.Source = new Uri(currentPlaying, UriKind.Absolute);
+            player.Play();
+       
         }
 
-        private void NavigationService_LoadCompleted(object sender, NavigationEventArgs e)
+        public void pause()
         {
-            var a = e.ExtraData.ToString();
+            player.Pause();
         }
     }
 }

@@ -52,13 +52,12 @@
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border x:Name="border" Background="Transparent" Width="50" Height="50" Margin="25,20" CornerRadius="100" BorderThickness="1" BorderBrush="#00bdd6">
-                                <Path x:Name="playbuttonpath" Stretch="Uniform" Height="15" Width="15" Fill="#00bdd6" Data="M6 5h4v14H6zm8 0h4v14h-4z"/>
+                                <Path x:Name="playbuttonpath" Stretch="Uniform" Height="15" Width="15" Fill="#00bdd6" Data="M4610 6399 l0 -2881 43 25 c195 114 4144 2392 4494 2593 339 194 448 262 440 270 -7 7 -743 434 -1637 949 -894 516 -2001 1155 -2460 1420 -459 265 -845 487 -857 494 l-23 12 0 -2882z"/>
                             </Border>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="Button.IsMouseOver" Value="True">
                                     <Setter TargetName="border" Property="Opacity" Value="0.8"/>
                                     <Setter TargetName="border" Property="BorderThickness" Value="2"/>
-                                    <Setter TargetName="playbuttonpath" Property="Data" Value="M4610 6399 l0 -2881 43 25 c195 114 4144 2392 4494 2593 339 194 448 262 440 270 -7 7 -743 434 -1637 949 -894 516 -2001 1155 -2460 1420 -459 265 -845 487 -857 494 l-23 12 0 -2882z"/>
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>

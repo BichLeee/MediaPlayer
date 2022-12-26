@@ -10,7 +10,7 @@
 
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
         <Border BorderThickness="1" CornerRadius="10" BorderBrush="#13343d">
-            <MediaElement Height="300" Width="580">
+            <MediaElement Height="300" Width="580" Name ="player" LoadedBehavior="Manual">
 
             </MediaElement>
         </Border>

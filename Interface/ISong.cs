@@ -16,6 +16,8 @@ namespace Interface
 
         public double time { get; set; }
 
+        public string path { get; set; }
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public object Clone()

@@ -30,6 +30,7 @@ namespace MediaPlayer.Pages
 
             DataContext = playlist;
             dataGrid.ItemsSource = playlist.listSongs;
+
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
