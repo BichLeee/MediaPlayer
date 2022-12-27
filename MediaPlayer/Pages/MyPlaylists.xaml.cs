@@ -24,63 +24,82 @@ namespace MediaPlayer.Pages
     /// </summary>
     public partial class MyPlaylists : Page
     {
-        public MyPlaylists()
+        public MyPlaylists(ObservableCollection<IPlaylist> _myplaylist, ObservableCollection<ISong> _songList )
         {
+
             InitializeComponent();
+            myplaylist =_myplaylist;
+            DataContext = myplaylist;
+
+            songList = _songList;
         }
 
-        ObservableCollection<ISong> listSongs = new ObservableCollection<ISong>();
-
         ObservableCollection<IPlaylist> myplaylist = new();
+        ObservableCollection<ISong> songList = new ObservableCollection<ISong>();
+        public delegate void PlaylistsValueChangeHandler(ObservableCollection<IPlaylist> newValue);
+        public event PlaylistsValueChangeHandler PlaylistsChanged;
 
+        public delegate void SongListValueChangeHandler(ObservableCollection<ISong> newValue);
+        public event SongListValueChangeHandler SongListChanged;
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            listSongs = new ObservableCollection<ISong>()
-            {
-                new ISong(){title = "Chúng ta không thuộc về nhau", singer = "Sơn Tùng M-TP", time=4.03, image="Images/chungtakhongthuocvenhau.jpg"},
-                new ISong(){title = "Gặp nhưng không ở lại", singer = "Hiền Hồ", time=4.05,image="Images/gapnhungkhongolai.jpg"},
-                new ISong(){title = "One last time", singer = "Ariana Grande", time=4.05,image="Images/onelasttime.jpg"},
-                new ISong(){title = "a", singer = "Sơn Tùng M-TP", time=4.03, image="Images/chungtakhongthuocvenhau.jpg"},
-                new ISong(){title = "b", singer = "Hiền Hồ", time=4.05,image="Images/gapnhungkhongolai.jpg"},
-                new ISong(){title = "c", singer = "Ariana Grande", time=4.05,image="Images/onelasttime.jpg"},               
-                new ISong(){title = "e", singer = "Ariana Grande", time=4.05,image="Images/onelasttime.jpg"},           
-                new ISong(){title = "f", singer = "Hiền Hồ", time=4.05,image="Images/gapnhungkhongolai.jpg"},
-                new ISong(){title = "g", singer = "Ariana Grande", time=4.05,image="Images/onelasttime.jpg"},                
-                new ISong(){title = "h", singer = "Hiền Hồ", time=4.05,image="Images/gapnhungkhongolai.jpg"},
-                new ISong(){title = "k", singer = "Ariana Grande", time=4.05,image="Images/onelasttime.jpg"}
-            };
-
-            myplaylist = new ObservableCollection<IPlaylist>()
-            {
-                new IPlaylist(){name = "Love Song", date = "20/12/2022", listSongs = listSongs , history=new History(){song=listSongs[0],time=2.00} },
-                new IPlaylist(){name = "Good Song", date = "20/12/2022", listSongs = listSongs , history=new History() { song = listSongs[2], time = 2.00 }}
-
-            };
-
-
-
-
-            DataContext = myplaylist;
 
             PLaylistsListView.ItemsSource = myplaylist;
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
+
+        }
+        private void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
         }
 
-        private void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
+        private void select_Playlists(object sender, SelectionChangedEventArgs e)
         {
             foreach (Window window in Application.Current.Windows)
             {
                 if (window.GetType() == typeof(MainWindow))
                 {
-                    object value = new Playlist((IPlaylist)myplaylist[(int)(window as MainWindow).sidebar.SelectedIndex]);
+                    int i = PLaylistsListView.SelectedIndex;
+                    if (i == -1)
+                        return;
+
+                    var playlist = myplaylist[i];
+                    var value = new Playlist((IPlaylist)playlist,songList);
+                    value.PlaylistChanged += Value_PlaylistChanged;
+                    value.SongListChanged += Value_SongListChanged;
                     (window as MainWindow).navframe.Navigate(value);
                     return;
                 }
             }
+        }
 
+        private void Value_SongListChanged(ObservableCollection<ISong> newValue)
+        {
+            songList = newValue;
+            SongListChanged?.Invoke(songList);
+        }
+
+        private void Value_PlaylistChanged(IPlaylist newValue)
+        {
+            int i = PLaylistsListView.SelectedIndex;
+            if (i == -1)
+                return;
+            myplaylist[i] = (IPlaylist) newValue.Clone();
+
+            PlaylistsChanged?.Invoke(myplaylist);
+            
+
+        }
+
+        private void AddPlaylist(object sender, RoutedEventArgs e)
+        {
+
+            var screen = new AddPlaylist();
+            screen.ShowDialog();
+            
         }
     }
 }

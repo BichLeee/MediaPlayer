@@ -48,7 +48,7 @@
             <StackPanel Orientation="Horizontal">
                 <Image Width="100" Height="90" Margin="20,0,0,0" Source="{Binding listSongs[0].image,Converter={StaticResource absoluteConverter}}"/>
 
-                <Button Width="100" Height="90" Background="Transparent" BorderThickness="0" Margin="-100,0,0,0" Cursor="Hand" >
+                <Button Width="100" Height="90" Background="Transparent" BorderThickness="0" Margin="-100,0,0,0" Cursor="Hand" Click="Button_Play">
 
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
@@ -85,7 +85,7 @@
 
 
         <Grid Name="songsGrid"  Height="340" Width="600" Margin="0,10,0,0" Background="#ebfdff" >
-            <DataGrid  x:Name="dataGrid" Style="{DynamicResource DataGridStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle2}" CellStyle="{DynamicResource DataGridCellStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" VirtualizingPanel.VirtualizationMode="Standard">
+            <DataGrid  x:Name="dataGrid" Style="{DynamicResource DataGridStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle2}" CellStyle="{DynamicResource DataGridCellStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" VirtualizingPanel.VirtualizationMode="Standard" MouseDoubleClick="PlayItemInPlaylist">
                 <!--<DataGrid.Resources>
                     <Style x:Key="myHeaderStyle">
                         <Setter Property="Height" Value="30px"/>

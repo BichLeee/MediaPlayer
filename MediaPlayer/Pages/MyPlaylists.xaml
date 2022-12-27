@@ -15,7 +15,7 @@
     </Page.Resources>
 
     <StackPanel>
-        <ListView Name="PLaylistsListView" Height="500" Background="Transparent">
+        <ListView Name="PLaylistsListView" Height="500" Background="Transparent" SelectionChanged="select_Playlists">
             <ListView.Resources>
                 <ContextMenu x:Key="listViewContextMenu">
                     <MenuItem Header="Delete" Click="MenuItem_Click">
@@ -49,7 +49,7 @@
             </ListView.ItemTemplate>
 
         </ListView>
-        <Button Height="40" Width="40" Margin="0,-90,30,0" Padding="5" HorizontalAlignment="Right" Cursor="Hand" Background="#00bdd6" BorderThickness="0">
+        <Button Height="40" Width="40" Margin="0,-90,30,0" Padding="5" HorizontalAlignment="Right" Cursor="Hand" Background="#00bdd6" BorderThickness="0" Click="AddPlaylist">
             <Path Stretch="Uniform" Fill="Black" Data="M32,64a8.00008,8.00008,0,0,1,8-8H216a8,8,0,0,1,0,16H40A8.00008,8.00008,0,0,1,32,64Zm184,56H40.00586a8,8,0,1,0,0,16H216a8,8,0,0,0,0-16Zm-72,64H40.00586a8,8,0,1,0,0,16H144a8,8,0,0,0,0-16Zm88,.00586H216v-16a8,8,0,1,0-16,0v16H184a8,8,0,0,0,0,16h16v16a8,8,0,0,0,16,0v-16h16a8,8,0,0,0,0-16Z"/>
         </Button>
     </StackPanel>

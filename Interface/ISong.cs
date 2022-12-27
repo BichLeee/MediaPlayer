@@ -14,7 +14,7 @@ namespace Interface
 
         public string image { get; set; }
 
-        public double time { get; set; }
+        public string time { get; set; }
 
         public string path { get; set; }
 

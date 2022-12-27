@@ -22,6 +22,7 @@ using System.Threading;
 using System.Windows.Threading;
 using System.Numerics;
 using System.IO;
+using System.Collections.ObjectModel;
 
 namespace MediaPlayer
 {
@@ -37,59 +38,94 @@ namespace MediaPlayer
             InitializeComponent();
            //sidebar.SelectedIndex = 0;
         }
-
-        private string _currentPlaying = string.Empty;
-        bool isPlay = false;
-       
-        //MyPlaylists myPlaylist = new MyPlaylists();
-        //RecentlyPlayed recentlyPlayed = new RecentlyPlayed();
-        //Teams team = new Teams();`
-
-        public delegate void PlayingValueChangeHandler(string newValue);
-        public event PlayingValueChangeHandler PlayingChanged;
-
+        ObservableCollection<IPlaylist> _myPlaylists = new ObservableCollection<IPlaylist>();
         
+        ObservableCollection<ISong> _songList = new ObservableCollection<ISong>();
 
-        Home home;
+        bool isPlay = false;
+        MyPlaylists myPlaylist ;
+        RecentlyPlayed recentlyPlayed = new RecentlyPlayed();
+        Teams team = new Teams();
+        ISong CurrentPlaying = new ISong();
+        int indexCurrent = 0;
+
         DispatcherTimer _timer;
         private void sidebar_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selected = sidebar.SelectedItem as NavButton;
-            int index = sidebar.SelectedIndex;
-   
-            if (index == 0)
-                navframe!.NavigationService.Navigate(home);
-            //else if (index == 1)
-            //    navframe!.NavigationService.Navigate(myPlaylist);
-            //else if (index == 2)
-            //    navframe!.NavigationService.Navigate(recentlyPlayed);
-            //else if (index == 3)
-            //    navframe!.NavigationService.Navigate(team);
-            //else
-            //{
-            //    //do something
-            //}
+            int index = sidebar.SelectedIndex; 
+
+            navframe.Visibility = Visibility;
+            if (index == 1)
+                navframe!.NavigationService.Navigate(myPlaylist);
+            else if (index == 2)
+                navframe!.NavigationService.Navigate(recentlyPlayed);
+            else if (index == 3)
+                navframe!.NavigationService.Navigate(team);
             else
-             navframe!.Navigate(selected.Navlink);
-           // navframe.Content = home;
+            {
+                navframe.Visibility = Visibility.Hidden;
+            }
+           
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-           home = new Home(_currentPlaying);
+           
            sidebar.SelectedIndex = 0;
+
+            _myPlaylists = new ObservableCollection<IPlaylist>()
+            {
+                new IPlaylist() { name = "Love Song", date = "20/12/2022", listSongs = null, history = null }
+            };
+
+            myPlaylist = new MyPlaylists(_myPlaylists,_songList);
+            myPlaylist.PlaylistsChanged += MyPlaylist_PlaylistsChanged;
+            myPlaylist.SongListChanged += MyPlaylist_SongListChanged;
         }
 
+        private void MyPlaylist_SongListChanged(ObservableCollection<ISong> newValue)
+        {
+            if (newValue.Count>0)
+            {
+                _songList = newValue;
+                CurrentPlaying = _songList[0];
+                indexCurrent = 0;
+                playMediaFile();
 
+            }
+            
+        }
+
+        private void MyPlaylist_PlaylistsChanged(ObservableCollection<IPlaylist> newValue)
+        {
+            _myPlaylists = newValue;
+        }
+
+        public void playMediaFile()
+        {
+            player.Source = new Uri(CurrentPlaying.path, UriKind.Absolute);
+            player.Play();
+            player.Stop();
+
+            _timer = new DispatcherTimer();
+            _timer.Interval = new TimeSpan(0, 0, 0, 1, 0);
+            _timer.Tick += _timer_Tick;
+
+            PlayButton_Path.Data = Geometry.Parse("M6 5h4v14H6zm8 0h4v14h-4z");
+            isPlay = true;
+            player.Play();
+            _timer.Start();
+
+        }
         private void PlayButton_Click(object sender, RoutedEventArgs e)
        {
+            if (CurrentPlaying.path==null)
+                return;
+
             if (isPlay == false)
             {
-                PlayButton_Path.Data = Geometry.Parse("M6 5h4v14H6zm8 0h4v14h-4z");
-                isPlay = true;
-                player.Play();
-                _timer.Start();
-               // home.play();
+                playMediaFile();
 
             }
             else
@@ -98,72 +134,23 @@ namespace MediaPlayer
                 isPlay = false;
                 player.Pause();
                 _timer.Stop();
-                //home.pause();
+               
             }
         }
 
         private void nextButton(object sender, RoutedEventArgs e)
         {
-            var screen = new OpenFileDialog();
-            if (screen.ShowDialog() == true)
-            {
-                _currentPlaying = screen.FileName;
+           
+            indexCurrent += 1;
+            if (indexCurrent >= _songList.Count)
+                return; // che do lap lai chua code
+            else
+                CurrentPlaying = _songList[indexCurrent];
 
-                string[] info = GetAudioFileInfo(_currentPlaying);
-
-                ISong song = new ISong(){
-                   title = info[0], singer =info[1],time =0,path = _currentPlaying };
-
-                player.Source = new Uri(_currentPlaying, UriKind.Absolute);
-                player.Play();
-                player.Stop();
-
-                _timer = new DispatcherTimer();
-                _timer.Interval = new TimeSpan(0, 0, 0, 1, 0); ;
-                _timer.Tick += _timer_Tick;
-
-
-                // home.currentPlaying = _currentPlaying;
-
-            }
+            playMediaFile();
         }
 
-        public string[] GetAudioFileInfo(string path)
-        {
-            path = Uri.UnescapeDataString(path);
 
-            byte[] b = new byte[128];
-            string[] infos = new string[5]; //Title; Singer; Album; Year; Comm;
-            bool isSet = false;
-
-            //Read bytes
-            try
-            {
-                FileStream fs = new FileStream(path, FileMode.Open);
-                fs.Seek(-128, SeekOrigin.End);
-                fs.Read(b, 0, 128);
-                //Set flag
-                String sFlag = System.Text.Encoding.Default.GetString(b, 0, 3);
-                if (sFlag.CompareTo("TAG") == 0) isSet = true;
-
-                if (isSet)
-                {
-                    infos[0] = System.Text.Encoding.Default.GetString(b, 3, 30); //Title
-                    infos[1] = System.Text.Encoding.Default.GetString(b, 33, 30); //Singer
-                    //infos[2] = System.Text.Encoding.Default.GetString(b, 63, 30); //Album
-                    //infos[3] = System.Text.Encoding.Default.GetString(b, 93, 4); //Year
-                    //infos[4] = System.Text.Encoding.Default.GetString(b, 97, 30); //Comm
-                }
-                fs.Close();
-                fs.Dispose();
-            }
-            catch (IOException ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
-            return infos;
-        }
 
         private void _timer_Tick(object? sender, EventArgs e)
         {
@@ -172,9 +159,17 @@ namespace MediaPlayer
             int seconds = player.Position.Seconds;
             currentPosition.Text = $"{hours}:{minutes}:{seconds}";
 
+            if (player.Position.TotalSeconds > 0)
+            {
+                if (player.NaturalDuration.TimeSpan.TotalSeconds > 0)
+                {
+                    progressSlider.Value = player.Position.TotalSeconds;
+                                    
+                }
+            }
         }
 
-        private void progressSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+            private void progressSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             double value = progressSlider.Value;
             TimeSpan newPosition = TimeSpan.FromSeconds(value);
@@ -195,7 +190,12 @@ namespace MediaPlayer
 
         private void player_MediaEnded(object sender, RoutedEventArgs e)
         {
-
+            indexCurrent += 1;
+            if (indexCurrent >= _songList.Count)
+                return; // che do lap lai chua code
+            else
+                CurrentPlaying = _songList[indexCurrent];
+            playMediaFile();
         }
     }
 }
