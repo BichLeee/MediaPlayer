@@ -54,7 +54,7 @@ namespace Interface
     {
 
 
-        public ObservableCollection<ISong> listSongs { get; set; }
+        public BindingList<ISong> listSongs { get; set; }
         public int currentIndex { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;

@@ -43,7 +43,7 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" Width="600" Height="100" VerticalAlignment="Center" HorizontalAlignment="Center" Background="#a1e7f0" MouseDown="StackPanel_MouseDown" Margin="0,5">
-                        <Image Width="80" Height="70" Margin="10,0,0,0" Source="{Binding listSongs[0].image,Converter={StaticResource absoluteConverter}}"/>
+                        <Image Width="80" Height="70" Margin="10,0,0,0" Source="/Images/playlist.png"/>
                         <TextBlock VerticalAlignment="Center" Margin="10,5,0,0">
                                     <Run Text="{Binding name}" Foreground="black" FontSize="14" FontWeight="DemiBold"/>
                                         <LineBreak/>

@@ -1,0 +1,55 @@
+﻿<Page x:Class="MediaPlayer.Pages.ListCurrentPlaying"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MediaPlayer.Pages"
+      mc:Ignorable="d" d:DesignWidth="800"
+      Title="ListCurrentPlaying" Height="502" Loaded="page_loaded">
+
+    <StackPanel>
+        <Canvas Height="33">
+            <TextBox Name="nameMedia" Height="30" VerticalContentAlignment="Center" TextChanged="searchChanged" TextWrapping="WrapWithOverflow" HorizontalAlignment="Left" VerticalAlignment="Center" Width="800"/>
+            <Label Name ="labelHintName" Foreground="Gray" HorizontalAlignment="Center" Height="30" VerticalAlignment="Top" >Search</Label>
+        </Canvas>
+        <ListView Name="currentPlayingListView" Height="500" Background="Transparent" SelectionChanged="select_Playlists">
+            <ListView.Resources>
+                <!--<ContextMenu x:Key="listViewContextMenu">
+                    <MenuItem Header="Delete" Click="deleteItem_Click">
+                        <MenuItem.Icon>
+                            <Image Source="/Images/bin.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                </ContextMenu>-->
+            </ListView.Resources>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <!--<Setter Property="ContextMenu" Value="{StaticResource listViewContextMenu}"/>-->
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate >
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" Width="250" Height="70" VerticalAlignment="Center" HorizontalAlignment="Center" Background="#e0e0e0"  Margin="0,5">
+                        <!--<Image Width="50" Height="50" Margin="5,0,0,0" VerticalAlignment ="Center"  Source="{Binding image}"/>-->
+                        <TextBlock VerticalAlignment="Center" Margin="5,0,0,0" TextWrapping="WrapWithOverflow">
+                                    <Run Text="{Binding title}" Foreground="black" FontSize="12" FontWeight="DemiBold"/>
+                                     <LineBreak/>
+                                    <Run Text="{Binding singer}"  Foreground="black" FontSize="10" />
+                                    <LineBreak/>
+                                    <Run Text="{Binding time}"  Foreground="#aaaeb6" FontSize="10"/>
+                        </TextBlock>
+                        
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+
+        </ListView>
+
+    </StackPanel>
+</Page>

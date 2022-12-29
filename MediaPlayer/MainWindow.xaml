@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MediaPlayer"
         xmlns:u="clr-namespace:Ulti;assembly=Ulti"
         mc:Ignorable="d"
-        Title="MainWindow" Height="645" Width="900" Loaded="Window_Loaded" KeyDown="Window_KeyDown">
+        Title="MainWindow" Height="645" Width="900" Loaded="Window_Loaded" KeyDown="Window_KeyDown" MouseDown="Window_MouseDown">
 
     <Window.Resources>
         <u:RelativeToAbsoluteConverter x:Key="absoluteConverter"/>
@@ -106,7 +106,7 @@
 
                         <Path Stretch="Uniform" Fill="#00bdd6" Data="M155.51465,24.81348a7.99629,7.99629,0,0,0-8.42578.87207L77.25488,80H32A16.01833,16.01833,0,0,0,16,96v64a16.01833,16.01833,0,0,0,16,16H77.25488l69.834,54.31445A7.99958,7.99958,0,0,0,160,224V32A7.9997,7.9997,0,0,0,155.51465,24.81348ZM32,96H72v64H32ZM144,207.64258,88,164.08789V91.91211l56-43.55469ZM207.9707,128a39.7337,39.7337,0,0,1-11.71679,28.28418,7.99983,7.99983,0,1,1-11.3125-11.31445,23.99835,23.99835,0,0,0,0-33.93946,7.99983,7.99983,0,1,1,11.3125-11.31445A39.7337,39.7337,0,0,1,207.9707,128Z"/>
                     </Button>
-                    <Button Template="{DynamicResource ButtonTemplate1}" Focusable="False"  Style="{DynamicResource ButtonStyle}" Height="18" Width="18" Margin="5" Padding="1">
+                    <Button Template="{DynamicResource ButtonTemplate1}" Click="listCurrentClick" Focusable="False"  Style="{DynamicResource ButtonStyle}" Height="18" Width="18" Margin="5" Padding="1">
 
                         <Path Stretch="Uniform" Fill="#00bdd6" Data="M224,128.00037a8.00008,8.00008,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8.00008,8.00008,0,0,1,224,128.00037Zm-184-56H216a8,8,0,0,0,0-16H40a8,8,0,1,0,0,16Zm176,112H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/>
                     </Button>
@@ -180,6 +180,7 @@
         <Slider Style="{StaticResource Horizontal_Slider}" Visibility="Hidden" Name="volumeSlider" VerticalAlignment="Top" ValueChanged="ChangeMediaVolume" 
        Minimum="0" Maximum="1" Value="0.5" Width="60" Canvas.Left="769" Canvas.Top="507" HorizontalAlignment="Left"/>
         <Frame x:Name="navframe" Height="489" Width="718" Visibility="Hidden" NavigationUIVisibility="Hidden" Background="#ebfdff" Canvas.Left="182" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Frame x:Name="navframe2" Height="489" Width="231" Visibility="Hidden"  Background="White" Canvas.Left="669" HorizontalAlignment="Left" VerticalAlignment="Center"/>
     </Canvas>
 
 

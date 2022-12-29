@@ -200,6 +200,7 @@ namespace MediaPlayer
             int seconds = player.NaturalDuration.TimeSpan.Seconds;
             totalPosition.Text = $"{hours}:{minutes}:{seconds}";
             progressSlider.Maximum = player.NaturalDuration.TimeSpan.TotalSeconds;
+            
 
         }
 
@@ -303,6 +304,45 @@ namespace MediaPlayer
                 volumeSlider.Value -= 0.05;
             }
 
+        }
+
+        bool showlistCurrent = false;
+        private void listCurrentClick(object sender, RoutedEventArgs e)
+        {
+            if (!showlistCurrent)
+            {
+                navframe2.Visibility = Visibility.Visible;
+                ListCurrentPlaying listCurrentPlaying = new ListCurrentPlaying(listSong);
+                navframe2!.NavigationService.Navigate(listCurrentPlaying);
+                listCurrentPlaying.SongListChanged += ListCurrentPlaying_SongListChanged;
+                showlistCurrent = true;
+            }
+            else
+            {
+                navframe2.Visibility = Visibility.Hidden;
+                showlistCurrent = false;
+            }
+           
+            
+        }
+
+        private void ListCurrentPlaying_SongListChanged(ListSong newValue)
+        {
+
+            listSong = (ListSong)newValue.Clone();
+            CurrentPlaying = listSong.listSongs[listSong.currentIndex];
+
+
+            playMediaFile();
+        }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            navframe2.Visibility = Visibility.Hidden;
+            showlistCurrent = false;
+
+            volumeSlider.Visibility = Visibility.Hidden;
+            volume = false;
         }
     }
 }

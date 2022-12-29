@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Numerics;
@@ -68,7 +69,7 @@ namespace MediaPlayer.Pages
                 songList = new ListSong()
                 {
 
-                    listSongs = new ObservableCollection<ISong>(),
+                    listSongs = new BindingList<ISong>(),
                     currentIndex = 0,
                 };
             }
@@ -156,7 +157,7 @@ namespace MediaPlayer.Pages
                             time = _time, 
                             path = _path,
                             currentTime = 0,
-                            image = "Images/onelasttime.jpg" // chua lay hinh anh
+                            image = ""
                         };
                         _playlist.listSongs.Add(song);
                     }
@@ -171,7 +172,7 @@ namespace MediaPlayer.Pages
                             time = _time, 
                             path = _path,
                             currentTime = 0,
-                            image = "Images/onelasttime.jpg" // chua lay hinh anh
+                            image = "" 
                         };
 
                         _playlist.listSongs.Add(song);

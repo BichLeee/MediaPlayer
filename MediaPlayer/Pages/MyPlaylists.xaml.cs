@@ -60,7 +60,22 @@ namespace MediaPlayer.Pages
        
         private void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            foreach (Window window in System.Windows.Application.Current.Windows)
+            {
+                if (window.GetType() == typeof(MainWindow))
+                {
+                    int i = PLaylistsListView.SelectedIndex;
+                    if (i == -1)
+                        return;
 
+                    var playlist = myplaylist[i];
+                    var value = new Playlist((IPlaylist)playlist, songList);
+                    value.PlaylistChanged += Value_PlaylistChanged;
+                    value.SongListChanged += Value_SongListChanged; ; ;
+                    (window as MainWindow).navframe.Navigate(value);
+                    return;
+                }
+            }
         }
 
         private void select_Playlists(object sender, SelectionChangedEventArgs e)
@@ -199,7 +214,7 @@ namespace MediaPlayer.Pages
                             time = "",
                             path = _path,
                             currentTime = 0,
-                            image = "Images/onelasttime.jpg" // chua lay hinh anh
+                            image = "" 
                         };
                         listSongs.Add(song);
                     }
@@ -214,7 +229,7 @@ namespace MediaPlayer.Pages
                             time = "",
                             path = _path,
                             currentTime = 0,
-                            image = "Images/onelasttime.jpg" // chua lay hinh anh
+                            image = "" 
                         };
 
                         listSongs.Add(song);
