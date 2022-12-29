@@ -48,7 +48,7 @@
             <StackPanel Orientation="Horizontal">
                 <Image Width="100" Height="90" Margin="20,0,0,0" Source="{Binding listSongs[0].image,Converter={StaticResource absoluteConverter}}"/>
 
-                <Button Width="100" Height="90" Background="Transparent" BorderThickness="0" Margin="-100,0,0,0" Cursor="Hand" Click="Button_Play">
+                <Button Width="100" Height="90" Focusable="False" Background="Transparent" BorderThickness="0" Margin="-100,0,0,0" Cursor="Hand" Click="Button_Play">
 
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
@@ -73,10 +73,10 @@
 
             </StackPanel>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,30,20,0">
-                <Button Template="{DynamicResource ButtonTemplate1}" Style="{DynamicResource ButtonStyle}" Height="20" Width="20" Margin="5" Padding="2" Click="addMediaFile">
+                <Button Template="{DynamicResource ButtonTemplate1}" Focusable="False"  Style="{DynamicResource ButtonStyle}" Height="20" Width="20" Margin="5" Padding="2" Click="addMediaFile">
                     <Path Stretch="Uniform"  Fill="Black" Data="M216,88H168V40a16.01833,16.01833,0,0,0-16-16H104A16.01833,16.01833,0,0,0,88,40V88H40a16.01833,16.01833,0,0,0-16,16v48a16.01833,16.01833,0,0,0,16,16H88v48a16.01833,16.01833,0,0,0,16,16h48a16.01833,16.01833,0,0,0,16-16V168h48a16.01833,16.01833,0,0,0,16-16V104A16.01833,16.01833,0,0,0,216,88Zm0,64H160a8.00008,8.00008,0,0,0-8,8v56H104V160a8.00008,8.00008,0,0,0-8-8H40V104H96a8.00008,8.00008,0,0,0,8-8V40h48V96a8.00008,8.00008,0,0,0,8,8h56Z"/>
                 </Button>
-                <Button Template="{DynamicResource ButtonTemplate1}" Style="{DynamicResource ButtonStyle}" Height="20" Width="20" Margin="5" Padding="2" Click="deleteMediaFile">
+                <Button Template="{DynamicResource ButtonTemplate1}" Focusable="False"  Style="{DynamicResource ButtonStyle}" Height="20" Width="20" Margin="5" Padding="2" Click="deleteMediaFile">
                     <Path Stretch="Uniform" Fill="Black" Data="M215.99609,48H176V40a24.02718,24.02718,0,0,0-24-24H104A24.02718,24.02718,0,0,0,80,40v8H39.99609a8,8,0,0,0,0,16h8V208a16.01833,16.01833,0,0,0,16,16h128a16.01833,16.01833,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8.00917,8.00917,0,0,1,8-8h48a8.00917,8.00917,0,0,1,8,8v8H96Zm95.99609,168h-128V64h128ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z"/>
                 </Button>
             </StackPanel>
@@ -84,8 +84,9 @@
         </DockPanel>
 
 
-        <Grid Name="songsGrid"  Height="340" Width="600" Margin="0,10,0,0" Background="#ebfdff" >
+        <Grid Name="songsGrid"  Height="340" Width="600" Margin="0,10,0,0" Background="#ebfdff"  >
             <DataGrid  x:Name="dataGrid" Style="{DynamicResource DataGridStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle2}" CellStyle="{DynamicResource DataGridCellStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" VirtualizingPanel.VirtualizationMode="Standard" MouseDoubleClick="PlayItemInPlaylist">
+               
                 <!--<DataGrid.Resources>
                     <Style x:Key="myHeaderStyle">
                         <Setter Property="Height" Value="30px"/>
@@ -95,6 +96,7 @@
 
                     </Style>
                 </DataGrid.Resources>-->
+               
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Title" Width="300" CanUserResize="False" IsReadOnly="True"
                                             Binding="{Binding title}"/>

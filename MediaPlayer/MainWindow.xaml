@@ -6,10 +6,89 @@
         xmlns:local="clr-namespace:MediaPlayer"
         xmlns:u="clr-namespace:Ulti;assembly=Ulti"
         mc:Ignorable="d"
-        Title="MainWindow" Height="645" Width="900" Loaded="Window_Loaded">
+        Title="MainWindow" Height="645" Width="900" Loaded="Window_Loaded" KeyDown="Window_KeyDown">
 
     <Window.Resources>
         <u:RelativeToAbsoluteConverter x:Key="absoluteConverter"/>
+
+        <Style x:Key="SliderRepeatButton" TargetType="RepeatButton">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="IsTabStop" Value="false" />
+            <Setter Property="Focusable" Value="false" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RepeatButton">
+                        <Border  BorderThickness="1" BorderBrush="Black" Background="Black" Height="3"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SliderRepeatButton1" TargetType="RepeatButton">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RepeatButton">
+                        <Border SnapsToDevicePixels="True" Background="#00bdd6"  BorderThickness="1" BorderBrush="#00bdd6" Height="3"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SliderThumb" TargetType="Thumb">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <!--Add name to ellipse to use in  controltemplate triggers-->
+                        <Ellipse x:Name="Ellipse" Height="10" Width="10" Fill="#00bdd6"></Ellipse>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="Ellipse" Property="Fill" Value="#00bdd6"></Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <ControlTemplate x:Key="Slider"  TargetType="Slider">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Track Grid.Row="1" x:Name="PART_Track"   >
+                    <Track.DecreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource SliderRepeatButton1}"  Command="Slider.DecreaseLarge" />
+                    </Track.DecreaseRepeatButton>
+                    <Track.Thumb>
+                        <Thumb Style="{StaticResource SliderThumb}"  />
+                    </Track.Thumb>
+                    <Track.IncreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource SliderRepeatButton}" Command="Slider.IncreaseLarge" />
+                    </Track.IncreaseRepeatButton>
+                </Track>
+            </Grid>
+        </ControlTemplate>
+
+        <Style x:Key="Horizontal_Slider" TargetType="Slider">
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Style.Triggers>
+                <Trigger Property="Orientation" Value="Horizontal">
+                    <Setter Property="MinHeight" Value="21" />
+                    <Setter Property="MinWidth" Value="104" />
+                    <Setter Property="Template" Value="{StaticResource Slider}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+
     </Window.Resources>
     <Canvas>
         <DockPanel LastChildFill="True" HorizontalAlignment="Left" Height="584" VerticalAlignment="Center" Width="900">
@@ -18,49 +97,48 @@
                     <!--<MediaElement MediaOpened="player_MediaOpened" MediaEnded="player_MediaEnded" Height="80" Width="115" x:Name ="player" LoadedBehavior="Manual"/>-->
                     <Image x:Name="icon" Source="Images/icon.png" Width="50" Margin="10"/>
                     <StackPanel VerticalAlignment="Center">
-                        <Label FontWeight="Bold" Content="Audio title"/>
-                        <Label Foreground="#aaaeb6" Margin="0,-8,0,0" Content="Singer"/>
+                        <Label Name ="title"  FontWeight="Bold" Content="Audio title" />
+                        <Label Name ="perform" Foreground="#aaaeb6" Margin="0,-8,0,0" Content="Singer"/>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Height="98" Width="92">
-                    <Button Template="{DynamicResource ButtonTemplate1}" Style="{DynamicResource ButtonStyle}" Height="18" Width="18" Margin="5" Padding="1">
+                    <Button Template="{DynamicResource ButtonTemplate1}" Focusable="False"  Click="volumn_click" Style="{DynamicResource ButtonStyle}" Height="18" Width="18" Margin="5" Padding="1">
 
                         <Path Stretch="Uniform" Fill="#00bdd6" Data="M155.51465,24.81348a7.99629,7.99629,0,0,0-8.42578.87207L77.25488,80H32A16.01833,16.01833,0,0,0,16,96v64a16.01833,16.01833,0,0,0,16,16H77.25488l69.834,54.31445A7.99958,7.99958,0,0,0,160,224V32A7.9997,7.9997,0,0,0,155.51465,24.81348ZM32,96H72v64H32ZM144,207.64258,88,164.08789V91.91211l56-43.55469ZM207.9707,128a39.7337,39.7337,0,0,1-11.71679,28.28418,7.99983,7.99983,0,1,1-11.3125-11.31445,23.99835,23.99835,0,0,0,0-33.93946,7.99983,7.99983,0,1,1,11.3125-11.31445A39.7337,39.7337,0,0,1,207.9707,128Z"/>
                     </Button>
-                    <Button Template="{DynamicResource ButtonTemplate1}" Style="{DynamicResource ButtonStyle}" Height="18" Width="18" Margin="5" Padding="1">
+                    <Button Template="{DynamicResource ButtonTemplate1}" Focusable="False"  Style="{DynamicResource ButtonStyle}" Height="18" Width="18" Margin="5" Padding="1">
 
                         <Path Stretch="Uniform" Fill="#00bdd6" Data="M224,128.00037a8.00008,8.00008,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8.00008,8.00008,0,0,1,224,128.00037Zm-184-56H216a8,8,0,0,0,0-16H40a8,8,0,1,0,0,16Zm176,112H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/>
                     </Button>
-                    <Button Template="{DynamicResource ButtonTemplate1}" Style="{DynamicResource ButtonStyle}" Height="18" Width="18" Margin="5" Padding="1">
+                    <Button Template="{DynamicResource ButtonTemplate1}" Focusable="False"  Style="{DynamicResource ButtonStyle}" Height="18" Width="18" Margin="5" Padding="1">
                         <Path Stretch="Uniform" Fill="#00bdd6" Data="M208,32H48A16.01833,16.01833,0,0,0,32,48V208a16.01833,16.01833,0,0,0,16,16H208a16.01833,16.01833,0,0,0,16-16V48A16.01833,16.01833,0,0,0,208,32Zm0,176H48V48H208ZM94.34326,161.65723a8.00034,8.00034,0,0,1,0-11.31446L136.686,108H108a8,8,0,0,1,0-16h48a8.00008,8.00008,0,0,1,8,8v48a8,8,0,0,1-16,0V119.314l-42.34326,42.34327a8.00063,8.00063,0,0,1-11.31348,0Z"/>
                     </Button>
                 </StackPanel>
                 <DockPanel LastChildFill="True" Margin="0,0,0,0" Width="461">
-                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Height="60px" HorizontalAlignment="Center">
-                        <Button Template="{DynamicResource ButtonTemplate1}" Style="{DynamicResource ButtonStyle}" Height="15" Width="15" Margin="30,0,30,0" Padding="1">
-
-                            <Path Stretch="Uniform" Fill="#00bdd6" Data="M10.59 9.17L5.41 4L4 5.41l5.17 5.17l1.42-1.41zM14.5 4l2.04 2.04L4 18.59L5.41 20L17.96 7.46L20 9.5V4h-5.5zm.33 9.41l-1.41 1.41l3.13 3.13L14.5 20H20v-5.5l-2.04 2.04l-3.13-3.13z"/>
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top"   Height="60px" HorizontalAlignment="Center">
+                        <Button Template="{DynamicResource ButtonTemplate1}" Focusable="False"  Style="{DynamicResource ButtonStyle}" Height="15" Width="15" Margin="30,0,30,0" Padding="1">
+                            <Path Stretch="Uniform" Fill="#00bdd6"  Data="M10.59 9.17L5.41 4L4 5.41l5.17 5.17l1.42-1.41zM14.5 4l2.04 2.04L4 18.59L5.41 20L17.96 7.46L20 9.5V4h-5.5zm.33 9.41l-1.41 1.41l3.13 3.13L14.5 20H20v-5.5l-2.04 2.04l-3.13-3.13z"/>
                         </Button>
-                        <Button Template="{DynamicResource ButtonTemplate1}" Style="{DynamicResource ButtonStyle}" Height="15" Width="15" Margin="20,0,20,0" Padding="1">
+                        <Button Template="{DynamicResource ButtonTemplate1}" Focusable="False" Click="prevButton"  Style="{DynamicResource ButtonStyle}" Height="15" Width="15" Margin="20,0,20,0" Padding="1">
                             <Path Stretch="Uniform" Fill="#00bdd6" Data="M6 6h2v12H6zm12 12V6l-8.5 6l8.5 6zm-2-3.86L12.97 12L16 9.86v4.28z"/>
                         </Button>
 
-                        <Button x:Name="PlayButton_Footer" Style="{DynamicResource ButtonStyle}" Template="{DynamicResource ButtonTemplate1}" Padding="1" Width="55" Height="55" Click="PlayButton_Click" Background="Transparent">
+                        <Button x:Name="PlayButton_Footer" Style="{DynamicResource ButtonStyle}"  Focusable="False" Template="{DynamicResource ButtonTemplate1}" Padding="1" Width="55" Height="55" Click="PlayButton_Click" Background="Transparent">
                             <Border Background="#00bdd6" CornerRadius="100" Width="50" Height="50">
                                 <Path x:Name="PlayButton_Path" Height="15" Width="15" Stretch="Uniform" Fill="White" Data="M4610 6399 l0 -2881 43 25 c195 114 4144 2392 4494 2593 339 194 448 262 440 270 -7 7 -743 434 -1637 949 -894 516 -2001 1155 -2460 1420 -459 265 -845 487 -857 494 l-23 12 0 -2882z"/>
                             </Border>
 
                         </Button>
-                        <Button Template="{DynamicResource ButtonTemplate1}" Style="{DynamicResource ButtonStyle}" Height="15" Width="15" Margin="20,0,20,0" Padding="1" Click="nextButton">
+                        <Button Template="{DynamicResource ButtonTemplate1}"  Focusable="False" Style="{DynamicResource ButtonStyle}" Height="15" Width="15" Margin="20,0,20,0" Padding="1" Click="nextButton">
                             <Path Stretch="Uniform" Fill="#00bdd6" Data="M14.5 12L6 6v12l8.5-6zM8 9.86L11.03 12L8 14.14V9.86zM16 6h2v12h-2z"/>
                         </Button>
-                        <Button Template="{DynamicResource ButtonTemplate1}" Style="{DynamicResource ButtonStyle}" Height="15" Width="15" Margin="30,0,30,0" Padding="1">
+                        <Button Template="{DynamicResource ButtonTemplate1}"  Focusable="False" Style="{DynamicResource ButtonStyle}" Height="15" Width="15" Margin="30,0,30,0" Padding="1">
                             <Path Stretch="Uniform" Fill="#00bdd6" Data="M24,128A72.08124,72.08124,0,0,1,96,56H204.68634L194.34277,45.65674a8.00018,8.00018,0,1,1,11.31446-11.31348l24,24c.024.02393.044.05078.06768.07471.15967.16406.31482.332.46009.50928.08423.10254.15783.21045.2362.31591.077.10352.15747.20459.2295.312.082.12255.15332.24951.22784.375.05835.09863.1203.19433.1745.29541.06793.127.12579.25732.1864.38671.05042.10743.10425.2129.15.32325.052.12549.09412.25341.13941.38086.04248.11914.08832.23632.12524.35791.03888.12841.06763.25927.1.38916.03076.123.06555.24511.09045.3706.03009.15088.04846.30371.0697.45654.01478.106.03522.21.04578.31739a8.04267,8.04267,0,0,1,0,1.584c-.01056.10742-.031.21143-.04578.31739-.02124.15283-.03961.30566-.0697.45654-.0249.12549-.05969.24756-.09045.3706-.03235.12989-.0611.26075-.1.38916-.03692.12159-.08276.23877-.12524.35791-.04529.12745-.08746.25537-.13941.38086-.04571.11035-.09954.21582-.15.32325-.06061.12939-.11847.25976-.1864.38671-.0542.10108-.11615.19678-.1745.29541-.07452.12549-.14587.25245-.22784.375-.072.10743-.15247.2085-.2295.312-.07837.10546-.152.21337-.2362.31591-.14264.17383-.29505.33887-.4516.49952-.02661.02734-.04907.05761-.07617.08447l-24,24a8.00018,8.00018,0,0,1-11.31446-11.31348L204.68634,72H96a56.06322,56.06322,0,0,0-56,56,8,8,0,0,1-16,0Zm200-8a8.00039,8.00039,0,0,0-8,8,56.06322,56.06322,0,0,1-56,56H51.31366l10.34357-10.34326a8.00018,8.00018,0,0,0-11.31446-11.31348l-24,24c-.024.02393-.044.05078-.06768.07471-.15967.16406-.31482.332-.46009.50928-.08423.10254-.15783.21045-.2362.31591-.077.10352-.15747.20459-.2295.312-.082.12255-.15332.24951-.22784.375-.05835.09863-.1203.19433-.1745.29541-.06793.12695-.12579.25732-.1864.38671-.05042.10743-.10425.2129-.15.32325-.052.12549-.09412.25341-.13941.38086-.04248.11914-.08832.23632-.12524.35791-.03888.12841-.06763.25927-.1.38916-.03076.123-.06555.24511-.09045.3706-.03009.15088-.04846.30371-.0697.45654-.01478.106-.03522.21-.04578.31739a8.04267,8.04267,0,0,0,0,1.584c.01056.10742.031.21143.04578.31739.02124.15283.03961.30566.0697.45654.0249.12549.05969.24756.09045.3706.03235.12989.0611.26075.1.38916.03692.12159.08276.23877.12524.35791.04529.12745.08746.25537.13941.38086.04571.11035.09954.21582.15.32325.06061.12939.11847.25976.1864.38671.0542.10108.11615.19678.1745.29541.07452.12549.14587.25245.22784.375.072.10743.15247.2085.2295.312.07837.10546.152.21337.2362.31591.14264.17383.295.33887.4516.49952.02661.02734.04907.05761.07617.08447l24,24a8.00018,8.00018,0,1,0,11.31446-11.31348L51.31366,200H160a72.08124,72.08124,0,0,0,72-72A8.00039,8.00039,0,0,0,224,120Z"/>
                         </Button>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Height="15" Width="451">
                         <TextBlock x:Name="currentPosition" Text="0:00" FontSize="10" Foreground="#00bdd6" Padding="0,0,10,0" />
-                        <Slider x:Name="progressSlider" ValueChanged="progressSlider_ValueChanged" Foreground="#00bdd6"  Width="380" Height="18" Background="#ebfdff" BorderThickness="0" RenderTransformOrigin="0.5,0.5" IsMoveToPointEnabled="True">
+                        <Slider Style="{StaticResource Horizontal_Slider}" Focusable="False"  x:Name="progressSlider" ValueChanged="progressSlider_ValueChanged" Foreground="#00bdd6"  Width="380" Height="18" Background="#ebfdff" BorderThickness="0" RenderTransformOrigin="0.5,0.5" IsMoveToPointEnabled="True">
                             <Slider.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform ScaleY="-1"/>
@@ -94,11 +172,13 @@
                     </MediaElement>
                 </Border>
 
-                <Label FontWeight="Bold" HorizontalAlignment="Center" FontSize="27" Margin="0,30,0,0">Audio title</Label>
-                <Label HorizontalAlignment="Center" FontSize="16" Foreground="#aaaeb6">Singer's name</Label>
+                <Label Name="titleHome"  FontWeight="Bold" HorizontalAlignment="Center" FontSize="27" Margin="0,30,0,0">Audio title</Label>
+                <Label Name="performHome" HorizontalAlignment="Center" FontSize="16" Foreground="#aaaeb6">Singer's name</Label>
             </StackPanel>
 
         </DockPanel>
+        <Slider Style="{StaticResource Horizontal_Slider}" Visibility="Hidden" Name="volumeSlider" VerticalAlignment="Top" ValueChanged="ChangeMediaVolume" 
+       Minimum="0" Maximum="1" Value="0.5" Width="60" Canvas.Left="769" Canvas.Top="507" HorizontalAlignment="Left"/>
         <Frame x:Name="navframe" Height="489" Width="718" Visibility="Hidden" NavigationUIVisibility="Hidden" Background="#ebfdff" Canvas.Left="182" HorizontalAlignment="Center" VerticalAlignment="Center"/>
     </Canvas>
 

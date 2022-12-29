@@ -27,20 +27,28 @@ namespace MediaPlayer.Pages
     /// </summary>
     public partial class Playlist : Page
     {
-        public Playlist(IPlaylist playlist, ObservableCollection<ISong> _songList )
+
+        public Playlist(IPlaylist playlist, ListSong _songList )
         {
             InitializeComponent();
             _playlist = (IPlaylist) playlist.Clone();
             DataContext = _playlist;
-            songList = _songList;
+            songList = (ListSong) _songList.Clone();
         }
         public delegate void PlaylistValueChangeHandler(IPlaylist newValue);
         public event PlaylistValueChangeHandler PlaylistChanged;
 
-        public delegate void SongListValueChangeHandler(ObservableCollection<ISong> newValue);
+        public delegate void SongListValueChangeHandler(ListSong newValue);
         public event SongListValueChangeHandler SongListChanged;
 
-        ObservableCollection<ISong> songList = new ObservableCollection<ISong>();
+        ListSong songList = new ListSong()
+        {
+
+            listSongs = null,
+            currentIndex = 0,
+        };
+
+
         IPlaylist _playlist { get; set; }
         MediaElement PreviewMedia = new MediaElement();
         string _time = "";
@@ -55,7 +63,16 @@ namespace MediaPlayer.Pages
             {
                 _playlist.listSongs = new ObservableCollection<ISong>();
             }
+            if(songList.listSongs == null)
+            {
+                songList = new ListSong()
+                {
 
+                    listSongs = new ObservableCollection<ISong>(),
+                    currentIndex = 0,
+                };
+            }
+            
         }
 
         private void PreviewMedia_MediaOpened(object sender, RoutedEventArgs e)
@@ -70,43 +87,101 @@ namespace MediaPlayer.Pages
             
 
         }
+
+        public enum TypeFile
+        {
+            VIDEO,
+            AUDIO,
+            OTHER
+        }
+
+        private TypeFile identifyFileType(String path)
+        {
+            string[] videoExtensions = {
+                                           ".AVI", ".MP4", ".DIVX", ".WMV", //etc  // Video
+                                       };
+
+            string[] audioExtensions = {
+                                           ".WAV", ".MID", ".MIDI", ".WMA", ".MP3", ".OGG", ".RMA", //etc // Audio
+                                       };
+
+
+            if (Array.IndexOf(videoExtensions, System.IO.Path.GetExtension(path).ToUpperInvariant()) != -1)
+            {
+                return TypeFile.VIDEO;
+            }
+
+            if (Array.IndexOf(audioExtensions, System.IO.Path.GetExtension(path).ToUpperInvariant()) != -1)
+            {
+                return TypeFile.AUDIO;
+            }
+
+            return TypeFile.OTHER;
+        }
         private void addMediaFile(object sender, RoutedEventArgs e)
         {
             OpenFileDialog screen = new OpenFileDialog();
             screen.Multiselect = true;
             if (screen.ShowDialog() == true)
             {
-                string[] paths = screen.FileNames;
+                string[] paths = screen.FileNames; 
 
                 foreach(var _path in paths)
                 {
-                    // chua check co phai file media hay k
-                    // phan biet cai nao video va audio
-                    // video thi lay thong tin kieu khac
-                    PreviewMedia.Source = new Uri(_path, UriKind.Absolute);
-                    PreviewMedia.Play();
-                    PreviewMedia.Stop();
-
-
-                    string[] info = GetAudioFileInfo(_path);
-                    ISong song = new ISong()
-                    {
-                        title = info[0],
-                        singer = info[1],
-                        time = _time, // chua lay dc thoi gian (khoi lay cung dc)
-                        path = _path,
-                        image = "Images/onelasttime.jpg" // chua lay hinh anh
-                    };
-
+                    bool isExist = false;
                     foreach (var x in _playlist.listSongs)
                     {
-                        if (x.title == song.title && x.path == song.path && x.singer == song.singer)
+                        if (x.path == _path)
                         {
-                            return;
+                            isExist = true; break;
                         }
 
                     }
-                    _playlist.listSongs.Add(song);
+                    if (isExist)
+                        continue;
+
+                    PreviewMedia.Source = new Uri(_path, UriKind.Absolute);
+                    PreviewMedia.Play();
+                    PreviewMedia.Stop();
+                    ISong song;
+                    
+                    
+                    if (identifyFileType(_path) == TypeFile.VIDEO)
+                    {
+                        string title = _path.Split('\\')[^1];
+                        song = new ISong()
+                        {
+                            title = title,
+                            singer = null,
+                            time = _time, 
+                            path = _path,
+                            currentTime = 0,
+                            image = "Images/onelasttime.jpg" // chua lay hinh anh
+                        };
+                        _playlist.listSongs.Add(song);
+                    }
+                    else if(identifyFileType(_path) == TypeFile.AUDIO)
+                    {
+                       
+                        string[] info = GetAudioFileInfo(_path);
+                        song = new ISong()
+                        {
+                            title = info[0],
+                            singer = info[1],
+                            time = _time, 
+                            path = _path,
+                            currentTime = 0,
+                            image = "Images/onelasttime.jpg" // chua lay hinh anh
+                        };
+
+                        _playlist.listSongs.Add(song);
+                    }
+                    else
+                    {
+
+                    }
+
+                    
                 }
                
                 PlaylistChanged?.Invoke(_playlist);
@@ -160,12 +235,16 @@ namespace MediaPlayer.Pages
 
         private void Button_Play(object sender, RoutedEventArgs e)
         {
+           
             if (_playlist.listSongs.Count == 0)
                 return;
-            foreach (var song in _playlist.listSongs)
+            songList.listSongs.Clear();
+            foreach (ISong song in _playlist.listSongs)
             {
-                songList.Add(song);
+                songList.listSongs.Add((ISong)song.Clone());
             }
+
+            songList.currentIndex = 0;
             SongListChanged?.Invoke(songList);
 
         }
@@ -174,5 +253,6 @@ namespace MediaPlayer.Pages
         {
            
         }
+       
     }
 }

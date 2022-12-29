@@ -35,9 +35,9 @@ namespace MediaPlayer.Pages
         {
             
 
-            myplaylist = new IPlaylist() { name = "Love Song", date = "20/12/2022", listSongs = null, history = null };
-
+            myplaylist = new IPlaylist() { name = "Love Song", date = "20/12/2022", listSongs = null };
             DataContext = myplaylist;
+
             dataGrid.ItemsSource = myplaylist.listSongs;
         }
     }

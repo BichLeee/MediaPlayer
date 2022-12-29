@@ -18,11 +18,14 @@ namespace Interface
 
         public string path { get; set; }
 
+        public double currentTime { get; set; }
+
         public event PropertyChangedEventHandler? PropertyChanged;
+
 
         public object Clone()
         {
-            return title.Clone();
+            return MemberwiseClone();
         }
     }
 
@@ -35,7 +38,24 @@ namespace Interface
 
         public string date { get; set; }
 
-        public History history { get; set; }
+        //public History history { get; set; }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public object Clone()
+        {
+            return MemberwiseClone();
+
+        }
+
+    }
+
+    public class ListSong : INotifyPropertyChanged, ICloneable
+    {
+
+
+        public ObservableCollection<ISong> listSongs { get; set; }
+        public int currentIndex { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
