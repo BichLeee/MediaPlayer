@@ -24,6 +24,7 @@ using System.Numerics;
 using System.IO;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+//using System.Drawing;
 
 namespace MediaPlayer
 {
@@ -52,6 +53,10 @@ namespace MediaPlayer
 
         BindingList<ISong> recentlyList;
         DispatcherTimer _timer;
+
+        bool isPlayShuffle = false;
+        bool isPlayRePeat = false;
+
         private void sidebar_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selected = sidebar.SelectedItem as NavButton;
@@ -303,6 +308,35 @@ namespace MediaPlayer
                 volumeSlider.Value -= 0.05;
             }
 
+        }
+
+        private void ShuffleButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (isPlayShuffle==false)
+            {
+                ShuffleButton_Border.Background = (Brush)new BrushConverter().ConvertFrom("#a1e7f0");
+                isPlayShuffle = true;
+            }
+            else
+            {
+                ShuffleButton_Border.Background = Brushes.Transparent;
+                isPlayShuffle = false;
+
+            }
+        }
+
+        private void RepeatButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (isPlayRePeat == false)
+            {
+                RepeatButton_Border.Background = (Brush)new BrushConverter().ConvertFrom("#a1e7f0");
+                isPlayRePeat = true;
+            }
+            else
+            {
+                RepeatButton_Border.Background = Brushes.Transparent;
+                isPlayRePeat = false;
+            }
         }
     }
 }

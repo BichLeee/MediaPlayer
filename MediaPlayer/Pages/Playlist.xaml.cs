@@ -253,6 +253,10 @@ namespace MediaPlayer.Pages
         {
            
         }
-       
+
+        private void DeleteItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
