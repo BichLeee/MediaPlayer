@@ -191,14 +191,9 @@ namespace MediaPlayer.Pages
             }
         }
 
-        private void deleteMediaFile(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         public string[] GetAudioFileInfo(string path)
         {
-            path = Uri.UnescapeDataString(path);
+            path = Uri.UnescapeDataString(path);    
 
             byte[] b = new byte[128];
             string[] infos = new string[5]; //Title; Singer; Album; Year; Comm;
@@ -257,7 +252,19 @@ namespace MediaPlayer.Pages
         {
             ISong clickedItem = dataGrid.SelectedItem as ISong;
             _playlist.listSongs.Remove(clickedItem);
-            
+
+            PlaylistChanged?.Invoke(_playlist);
+
         }
+
+        private void DeleteAllItem_Click(object sender, RoutedEventArgs e)
+        {
+            _playlist.listSongs.Clear();
+
+            PlaylistChanged?.Invoke(_playlist);
+
+        }
+
+
     }
 }
