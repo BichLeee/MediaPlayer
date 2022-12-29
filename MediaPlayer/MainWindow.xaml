@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MediaPlayer"
         xmlns:u="clr-namespace:Ulti;assembly=Ulti"
         mc:Ignorable="d"
-        Title="MainWindow" Height="645" Width="900" Loaded="Window_Loaded" KeyDown="Window_KeyDown">
+        Title="MainWindow" Height="625" Width="900" Loaded="Window_Loaded" KeyDown="Window_KeyDown">
 
     <Window.Resources>
         <u:RelativeToAbsoluteConverter x:Key="absoluteConverter"/>
@@ -93,7 +93,7 @@
     <Canvas>
         <DockPanel LastChildFill="True" HorizontalAlignment="Left" Height="584" VerticalAlignment="Center" Width="900">
             <DockPanel x:Name="footer" DockPanel.Dock="Bottom" LastChildFill="True" Height="96">
-                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" Width="238">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" Width="290">
                     <!--<MediaElement MediaOpened="player_MediaOpened" MediaEnded="player_MediaEnded" Height="80" Width="115" x:Name ="player" LoadedBehavior="Manual"/>-->
                     <Image x:Name="icon" Source="Images/icon.png" Width="50" Margin="10"/>
                     <StackPanel VerticalAlignment="Center">
@@ -101,10 +101,9 @@
                         <Label Name ="perform" Foreground="#aaaeb6" Margin="0,-8,0,0" Content="Singer"/>
                     </StackPanel>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Height="98" Width="92">
-                    <Button Template="{DynamicResource ButtonTemplate1}" Focusable="False"  Click="volumn_click" Style="{DynamicResource ButtonStyle}" Height="18" Width="18" Margin="5" Padding="1">
-
-                        <Path Stretch="Uniform" Fill="#00bdd6" Data="M155.51465,24.81348a7.99629,7.99629,0,0,0-8.42578.87207L77.25488,80H32A16.01833,16.01833,0,0,0,16,96v64a16.01833,16.01833,0,0,0,16,16H77.25488l69.834,54.31445A7.99958,7.99958,0,0,0,160,224V32A7.9997,7.9997,0,0,0,155.51465,24.81348ZM32,96H72v64H32ZM144,207.64258,88,164.08789V91.91211l56-43.55469ZM207.9707,128a39.7337,39.7337,0,0,1-11.71679,28.28418,7.99983,7.99983,0,1,1-11.3125-11.31445,23.99835,23.99835,0,0,0,0-33.93946,7.99983,7.99983,0,1,1,11.3125-11.31445A39.7337,39.7337,0,0,1,207.9707,128Z"/>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Height="98" Width="92" Margin="0,0,20,0">
+                    <Button Template="{DynamicResource ButtonTemplate1}" Focusable="False"  Click="volumn_click" Style="{DynamicResource ButtonStyle}" Height="19" Width="19" Margin="5" Padding="1">
+                        <Path x:Name="Volumn_Path" Stretch="Uniform" Fill="#00bdd6" Data="M247.9707,128a79.47687,79.47687,0,0,1-23.43164,56.56934,8.00053,8.00053,0,0,1-11.31445-11.31446,63.99788,63.99788,0,0,0,0-90.50976,8.00053,8.00053,0,0,1,11.31445-11.31446A79.47687,79.47687,0,0,1,247.9707,128ZM160,32V224a7.99935,7.99935,0,0,1-12.91113,6.31445L77.25488,176H32a16.01833,16.01833,0,0,1-16-16V96A16.01833,16.01833,0,0,1,32,80H77.25488l69.834-54.31445A7.99958,7.99958,0,0,1,160,32ZM32,160H72V96H32ZM144,48.35742,88,91.91211v72.17578l56,43.55469ZM184.94043,99.7168a7.99914,7.99914,0,0,0,.001,11.31347,23.99835,23.99835,0,0,1,0,33.93946,7.99983,7.99983,0,1,0,11.3125,11.31445,39.99722,39.99722,0,0,0,0-56.56836A7.99827,7.99827,0,0,0,184.94043,99.7168Z"/>
                     </Button>
                     <Button Template="{DynamicResource ButtonTemplate1}" Focusable="False"  Style="{DynamicResource ButtonStyle}" Height="18" Width="18" Margin="5" Padding="1">
 

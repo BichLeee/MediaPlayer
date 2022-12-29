@@ -253,10 +253,11 @@ namespace MediaPlayer.Pages
         {
            
         }
-
         private void DeleteItem_Click(object sender, RoutedEventArgs e)
         {
-
+            ISong clickedItem = dataGrid.SelectedItem as ISong;
+            _playlist.listSongs.Remove(clickedItem);
+            
         }
     }
 }
