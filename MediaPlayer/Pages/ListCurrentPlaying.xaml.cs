@@ -23,16 +23,17 @@ namespace MediaPlayer.Pages
     public partial class ListCurrentPlaying : Page
     {   
 
-        public ListCurrentPlaying(ListSong _listSong)
+        public ListCurrentPlaying(ListSong _listSong,MediaElement _player)
         {
             InitializeComponent();
             listSong =(ListSong) _listSong.Clone();
-            DataContext = listSong; 
-
+            DataContext = listSong;
+            player = _player;
         }
         public delegate void SongListValueChangeHandler(ListSong newValue);
         public event SongListValueChangeHandler SongListChanged;
 
+        MediaElement player = new MediaElement();
         ListSong listSong = new ListSong();
         BindingList <ISong> songs = new BindingList <ISong>();
 
@@ -43,11 +44,6 @@ namespace MediaPlayer.Pages
         }
         private void select_Playlists(object sender, SelectionChangedEventArgs e)
         {
-            if (currentPlayingListView.SelectedItems.Count == 0)
-                return;
-            listSong.currentIndex = listSong.listSongs.IndexOf((ISong) currentPlayingListView.SelectedItem);
-            
-            SongListChanged?.Invoke(listSong);
         }
         BindingList<ISong> search = new();
         private void searchChanged(object sender, TextChangedEventArgs e)
@@ -74,7 +70,24 @@ namespace MediaPlayer.Pages
 
         }
 
+        private void deleteItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (currentPlayingListView.SelectedIndex < 0 || currentPlayingListView.SelectedIndex == listSong.currentIndex)
+                return;
+            listSong.listSongs[listSong.currentIndex].currentTime = player.Position.TotalSeconds;
+            listSong.listSongs.Remove((ISong)currentPlayingListView.SelectedItem);
+
+            SongListChanged?.Invoke(listSong);
+        }
 
 
+        private void select_item(object sender, MouseButtonEventArgs e)
+        {
+            if (currentPlayingListView.SelectedItems.Count == 0)
+                return;
+            listSong.currentIndex = listSong.listSongs.IndexOf((ISong)currentPlayingListView.SelectedItem);
+
+            SongListChanged?.Invoke(listSong);
+        }
     }
 }

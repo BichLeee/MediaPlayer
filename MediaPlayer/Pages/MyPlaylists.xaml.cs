@@ -20,6 +20,7 @@ using Ulti;
 using System.IO;
 using Path = System.IO.Path;
 using static MediaPlayer.Pages.Playlist;
+using System.Numerics;
 
 namespace MediaPlayer.Pages
 {
@@ -28,7 +29,7 @@ namespace MediaPlayer.Pages
     /// </summary>
     public partial class MyPlaylists : Page
     {
-        public MyPlaylists(ObservableCollection<IPlaylist> _myplaylist, ListSong _songList )
+        public MyPlaylists(ObservableCollection<IPlaylist> _myplaylist, ListSong _songList , MediaElement _player)
         {
 
             InitializeComponent();
@@ -36,9 +37,11 @@ namespace MediaPlayer.Pages
             DataContext = myplaylist;
 
             songList =(ListSong) _songList.Clone();
-          
-        }
+            player = _player;
 
+
+        }
+        MediaElement player = new MediaElement();
         ObservableCollection<IPlaylist> myplaylist = new();
         ListSong songList = new ListSong();
 
@@ -57,8 +60,7 @@ namespace MediaPlayer.Pages
             PreviewMedia.LoadedBehavior = MediaState.Manual;
         }
 
-       
-        private void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
+        private void mouseleftdown(object sender, MouseButtonEventArgs e)
         {
             foreach (Window window in System.Windows.Application.Current.Windows)
             {
@@ -69,7 +71,7 @@ namespace MediaPlayer.Pages
                         return;
 
                     var playlist = myplaylist[i];
-                    var value = new Playlist((IPlaylist)playlist, songList);
+                    var value = new Playlist((IPlaylist)playlist, songList,player);
                     value.PlaylistChanged += Value_PlaylistChanged;
                     value.SongListChanged += Value_SongListChanged; ; ;
                     (window as MainWindow).navframe.Navigate(value);
@@ -77,6 +79,7 @@ namespace MediaPlayer.Pages
                 }
             }
         }
+
 
         private void select_Playlists(object sender, SelectionChangedEventArgs e)
         {
@@ -89,7 +92,7 @@ namespace MediaPlayer.Pages
                         return;
 
                     var playlist = myplaylist[i];
-                    var value = new Playlist((IPlaylist)playlist,songList);
+                    var value = new Playlist((IPlaylist)playlist,songList,player);
                     value.PlaylistChanged += Value_PlaylistChanged;
                     value.SongListChanged += Value_SongListChanged; ; ;
                     (window as MainWindow).navframe.Navigate(value);
@@ -318,5 +321,7 @@ namespace MediaPlayer.Pages
             myplaylist.RemoveAt(index);
             PlaylistsChanged?.Invoke(myplaylist);
         }
+
+      
     }
 }

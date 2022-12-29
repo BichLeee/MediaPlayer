@@ -7,7 +7,7 @@
       xmlns:u="clr-namespace:Ulti;assembly=Ulti"
 
       mc:Ignorable="d" 
-      d:DesignHeight="500" d:DesignWidth="670"
+      d:DesignHeight="500" d:DesignWidth="720"
       Title="RecentlyPlayed" Loaded="Page_Loaded"
       xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
 
@@ -47,7 +47,7 @@
         <DockPanel LastChildFill="True" Width="600" Height="120" VerticalAlignment="Center" HorizontalAlignment="Center" Background="#a1e7f0" Margin="0,5">
             <StackPanel Orientation="Horizontal">
                 <Image Width="100" Height="90" Margin="20,0,0,0" Source="{Binding listSongs[0].image,Converter={StaticResource absoluteConverter}}"/>
-                <Button Width="100" Height="90" Background="Transparent" BorderThickness="0" Margin="-100,0,0,0" Cursor="Hand">
+                <Button Width="100" Height="90" Background="Transparent" Click="play_recently" BorderThickness="0" Margin="-100,0,0,0" Cursor="Hand">
 
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
@@ -63,13 +63,14 @@
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <TextBlock VerticalAlignment="Center" Margin="5,5,0,0" Foreground="#aaaeb6">
-                                <Run Text="{Binding name}" FontSize="20" FontWeight="DemiBold"/>
+                <TextBlock VerticalAlignment="Center" Margin="0,5,0,0" FontWeight="DemiBold" FontSize="25" Foreground="#ebfdff">
+                                <!--<Run Text="{Binding name}" FontSize="20" FontWeight="DemiBold"/>
                                     <LineBreak/>
                                 <Run Text="{Binding history.song.title}" Foreground="black" FontSize="18" FontWeight="DemiBold"/>
                                     <LineBreak/>
                                  History -
-                                <Run Text="{Binding history.time}" FontSize="12"/>
+                                <Run Text="{Binding history.time}" FontSize="12"/>-->
+                    Recently 
                 </TextBlock>
 
 
@@ -77,7 +78,7 @@
         </DockPanel>
 
         <Grid Name="songsGrid"  Height="340" Width="600" Margin="0,10,0,0" Background="#ebfdff" >
-            <DataGrid  x:Name="dataGrid" Style="{DynamicResource DataGridStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle2}" CellStyle="{DynamicResource DataGridCellStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" VirtualizingPanel.VirtualizationMode="Standard">
+            <DataGrid  x:Name="dataGrid" Style="{DynamicResource DataGridStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle2}" CellStyle="{DynamicResource DataGridCellStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" VirtualizingPanel.VirtualizationMode="Standard" SelectionChanged="select_recently">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Title" Width="300" CanUserResize="False" IsReadOnly="True"
                                             Binding="{Binding title}"/>

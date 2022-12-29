@@ -29,19 +29,20 @@ namespace MediaPlayer.Pages
     public partial class Playlist : Page
     {
 
-        public Playlist(IPlaylist playlist, ListSong _songList )
+        public Playlist(IPlaylist playlist, ListSong _songList, MediaElement _player  )
         {
             InitializeComponent();
             _playlist = (IPlaylist) playlist.Clone();
             DataContext = _playlist;
             songList = (ListSong) _songList.Clone();
+            player = _player;
         }
         public delegate void PlaylistValueChangeHandler(IPlaylist newValue);
         public event PlaylistValueChangeHandler PlaylistChanged;
 
         public delegate void SongListValueChangeHandler(ListSong newValue);
         public event SongListValueChangeHandler SongListChanged;
-
+        MediaElement player = new MediaElement();
         ListSong songList = new ListSong()
         {
 
@@ -192,14 +193,9 @@ namespace MediaPlayer.Pages
             }
         }
 
-        private void deleteMediaFile(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         public string[] GetAudioFileInfo(string path)
         {
-            path = Uri.UnescapeDataString(path);
+            path = Uri.UnescapeDataString(path);    
 
             byte[] b = new byte[128];
             string[] infos = new string[5]; //Title; Singer; Album; Year; Comm;
@@ -254,6 +250,44 @@ namespace MediaPlayer.Pages
         {
            
         }
-       
+        private void DeleteItem_Click(object sender, RoutedEventArgs e)
+        {
+            ISong clickedItem = dataGrid.SelectedItem as ISong;
+            _playlist.listSongs.Remove(clickedItem);
+
+            PlaylistChanged?.Invoke(_playlist);
+
+        }
+
+        private void DeleteAllItem_Click(object sender, RoutedEventArgs e)
+        {
+            _playlist.listSongs.Clear();
+
+            PlaylistChanged?.Invoke(_playlist);
+
+        }
+
+        private void play_Click(object sender, RoutedEventArgs e)
+        {
+
+            ISong temp = (ISong)dataGrid.SelectedItem;
+            if (temp== null)
+                return;
+            songList.listSongs.Add((ISong) temp.Clone());
+        
+             
+            songList.currentIndex = songList.listSongs.Count -1;
+            SongListChanged?.Invoke(songList);
+         }
+
+        private void addtoCP_Click(object sender, RoutedEventArgs e)
+        {
+            ISong temp = (ISong)dataGrid.SelectedItem;
+            if (temp == null)
+                return;
+            songList.listSongs.Add((ISong)temp.Clone());
+            songList.listSongs[songList.currentIndex].currentTime = player.Position.TotalSeconds;
+           SongListChanged?.Invoke(songList);
+        }
     }
 }

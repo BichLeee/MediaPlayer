@@ -24,6 +24,7 @@ using System.Numerics;
 using System.IO;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+//using System.Drawing;
 
 namespace MediaPlayer
 {
@@ -37,25 +38,29 @@ namespace MediaPlayer
         public MainWindow()
         {
             InitializeComponent();
-           //sidebar.SelectedIndex = 0;
+            //sidebar.SelectedIndex = 0;
         }
         ObservableCollection<IPlaylist> _myPlaylists = new ObservableCollection<IPlaylist>();
-        
+
 
         public bool isPlay = false;
-        MyPlaylists myPlaylist ;
-        RecentlyPlayed recentlyPlayed = new RecentlyPlayed();
+        MyPlaylists myPlaylist;
+        RecentlyPlayed recentlyPlayed;
         Teams team = new Teams();
 
         ListSong listSong = new();
         ISong CurrentPlaying = new ISong();
 
-        BindingList<ISong> recentlyList;
+        BindingList<ISong> recentlyList = new BindingList<ISong>();
         DispatcherTimer _timer;
+
+        bool isPlayShuffle = false;
+        bool isPlayRePeat = false;
+
         private void sidebar_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selected = sidebar.SelectedItem as NavButton;
-            int index = sidebar.SelectedIndex; 
+            int index = sidebar.SelectedIndex;
 
             navframe.Visibility = Visibility;
             if (index == 1)
@@ -68,30 +73,33 @@ namespace MediaPlayer
             {
                 navframe.Visibility = Visibility.Hidden;
             }
-           
+
         }
         public void saveRecently()
         {
-            ISong newFile =(ISong) CurrentPlaying.Clone();
+            if (CurrentPlaying.path == null)
+                return;
+
+            ISong newFile = (ISong)CurrentPlaying.Clone();
             newFile.currentTime = player.Position.TotalSeconds;
 
-            foreach(var song in recentlyList)
+            ISong temp = null;
+            foreach (var song in recentlyList)
             {
-                if(newFile.title == song.title&& newFile.singer == song.singer && newFile.path == song.path)
+                if (newFile.path == song.path)
                 {
-                    recentlyList.Remove(song);
+                    temp = song;
+                    break;
                 }
             }
-            recentlyList.Reverse();
-            recentlyList.Add(newFile);
-            recentlyList.Reverse();
-
-            
+           if(temp != null)
+                recentlyList.Remove(temp);
+            recentlyList.Insert(0,newFile);
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-           
-           sidebar.SelectedIndex = 0;
+
+            sidebar.SelectedIndex = 0;
             player.Volume = (double)volumeSlider.Value;
 
             _myPlaylists = new ObservableCollection<IPlaylist>()
@@ -99,21 +107,34 @@ namespace MediaPlayer
                 new IPlaylist() { name = "Love Song", date = "20/12/2022", listSongs = null, }
             };
 
-            myPlaylist = new MyPlaylists(_myPlaylists, listSong);
+            myPlaylist = new MyPlaylists(_myPlaylists, listSong,player);
             myPlaylist.PlaylistsChanged += MyPlaylist_PlaylistsChanged;
-            myPlaylist.SongListChanged += MyPlaylist_SongListChanged; ;
+            myPlaylist.SongListChanged += MyPlaylist_SongListChanged; 
+
+            recentlyPlayed = new RecentlyPlayed(recentlyList,listSong);
+            recentlyPlayed.SongListChanged += RecentlyPlayed_SongListChanged;
+
+        }
+
+        private void RecentlyPlayed_SongListChanged(ListSong newValue)
+        {
+            listSong = (ListSong) newValue.Clone();
+            saveRecently();
+            CurrentPlaying = listSong.listSongs[listSong.currentIndex];
+            playMediaFile();
         }
 
         private void MyPlaylist_SongListChanged(ListSong newValue)
         {
             if (newValue.listSongs.Count > 0)
             {
-                listSong = (ListSong) newValue.Clone();
+                listSong = (ListSong)newValue.Clone();
+                
+                saveRecently();
                 CurrentPlaying = listSong.listSongs[listSong.currentIndex];
-               
 
                 playMediaFile();
-                
+
             }
         }
 
@@ -127,9 +148,9 @@ namespace MediaPlayer
 
             isPlay = true;
             player.Source = new Uri(CurrentPlaying.path, UriKind.Absolute);
-            player.Play(); 
+            player.Play();
             player.Stop();
-            
+
             title.Content = CurrentPlaying.title;
             perform.Content = CurrentPlaying.singer;
 
@@ -141,16 +162,16 @@ namespace MediaPlayer
             _timer.Tick += _timer_Tick;
 
             PlayButton_Path.Data = Geometry.Parse("M6 5h4v14H6zm8 0h4v14h-4z");
-            
+
             player.Play();
             _timer.Start();
             TimeSpan newPosition = TimeSpan.FromSeconds(CurrentPlaying.currentTime);
             player.Position = newPosition;
         }
 
-        
+
         private void PlayButton_Click(object sender, RoutedEventArgs e)
-       {
+        {
             if (CurrentPlaying.path == null)
                 return;
 
@@ -177,13 +198,13 @@ namespace MediaPlayer
 
             if (player.Position.TotalSeconds > 0)
             {
-                if (player.NaturalDuration.TimeSpan.TotalSeconds > 0)
-                {
+               
                     progressSlider.Value = player.Position.TotalSeconds;
-                                    
-                }
+
+                
             }
         }
+
 
         private void progressSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
@@ -192,6 +213,7 @@ namespace MediaPlayer
             player.Position = newPosition;
 
         }
+
 
         private void player_MediaOpened(object sender, RoutedEventArgs e)
         {
@@ -206,79 +228,125 @@ namespace MediaPlayer
 
         private void player_MediaEnded(object sender, RoutedEventArgs e)
         {
-
-            listSong.currentIndex += 1;
-            if (listSong.currentIndex >= listSong.listSongs.Count)
-            {
-                listSong.currentIndex -= 1;
-                return; // che do lap lai chua code
-            }
-            listSong.listSongs[listSong.currentIndex - 1].currentTime = 0;
-            CurrentPlaying = listSong.listSongs[listSong.currentIndex];
-            playMediaFile();
+            next();
         }
         private void nextButton(object sender, RoutedEventArgs e)
         {
-            if (listSong.listSongs == null)
-                return;
-            // listSong.listSongs[listSong.currentIndex].currentTime = player.Position.TotalSeconds;
-            listSong.currentIndex += 1;
-            if (listSong.currentIndex >= listSong.listSongs.Count)
-            {
-                listSong.currentIndex -= 1;
-                return; // che do lap lai chua code
-            }
+            next();
+        }
 
+        public void next()
+        {
+            
+            if (isPlayShuffle)
+            {
+                int index = listSong.currentIndex;
+                while (index == listSong.currentIndex)
+                {
+                    Random r = new Random();
+                    index = r.Next(0, listSong.listSongs.Count);
+
+                }
+                listSong.listSongs[listSong.currentIndex].currentTime = 0;
+                listSong.currentIndex = index;
+
+            }
             else
             {
-                listSong.listSongs[listSong.currentIndex - 1].currentTime = 0;
-                CurrentPlaying = listSong.listSongs[listSong.currentIndex];
+                if (listSong.currentIndex == listSong.listSongs.Count - 1)
+                {
+                    if (isPlayRePeat)
+                    {
+
+                        listSong.listSongs[listSong.currentIndex].currentTime = 0;
+                        listSong.currentIndex = 0;
+                    }
+                    else
+                    {
+                        listSong.currentIndex -= 1;
+                        return;
+                    }
+
+                }
+                else
+                {
+                    listSong.listSongs[listSong.currentIndex].currentTime = 0;
+                    listSong.currentIndex += 1;
+                }
             }
-              
-           
+
+            saveRecently();
+            CurrentPlaying = listSong.listSongs[listSong.currentIndex];
             playMediaFile();
         }
         private void prevButton(object sender, RoutedEventArgs e)
         {
-            if(listSong.listSongs == null)
+            if (listSong.listSongs == null)
                 return;
-            listSong.currentIndex -= 1;
-            if (listSong.currentIndex < 0)
+
+            if (isPlayShuffle)
             {
-                listSong.currentIndex += 1;
-                return;
+                int index = listSong.currentIndex;
+                while (index == listSong.currentIndex)
+                {
+                    Random r = new Random();
+                    index = r.Next(0, listSong.listSongs.Count);
+
+                }
+                listSong.listSongs[listSong.currentIndex].currentTime = 0;
+                listSong.currentIndex = index;
+
             }
-            listSong.listSongs[listSong.currentIndex + 1].currentTime = 0;
+            else
+            {
+                listSong.currentIndex -= 1;
+                if (listSong.currentIndex < 0)
+                {
+                    listSong.currentIndex += 1;
+                    return;
+                }
+                listSong.listSongs[listSong.currentIndex + 1].currentTime = 0;
+            }
+
+            saveRecently();
             CurrentPlaying = listSong.listSongs[listSong.currentIndex];
 
-           
             playMediaFile();
         }
 
         private void ChangeMediaVolume(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             player.Volume = (double)volumeSlider.Value;
+            if (volumeSlider.Value == 0)
+            {
+                Volumn_Path.Data = Geometry.Parse("M155.51465,24.81348a7.99427,7.99427,0,0,0-8.42578.87207L77.25488,80H32A16.01833,16.01833,0,0,0,16,96v64a16.01833,16.01833,0,0,0,16,16H77.25488l69.834,54.31445A7.99958,7.99958,0,0,0,160,224V32A7.9997,7.9997,0,0,0,155.51465,24.81348ZM32,96H72v64H32ZM144,207.64258,88,164.08789V91.91211l56-43.55469Zm101.65723-61.29981a8.00053,8.00053,0,0,1-11.31446,11.31446L216,139.31445l-18.34277,18.34278a8.00053,8.00053,0,0,1-11.31446-11.31446L204.68555,128l-18.34278-18.34277a8.00053,8.00053,0,0,1,11.31446-11.31446L216,116.68555l18.34277-18.34278a8.00053,8.00053,0,0,1,11.31446,11.31446L227.31445,128Z");
+            }
+            else
+            {
+                Volumn_Path.Data = Geometry.Parse("M247.9707,128a79.47687,79.47687,0,0,1-23.43164,56.56934,8.00053,8.00053,0,0,1-11.31445-11.31446,63.99788,63.99788,0,0,0,0-90.50976,8.00053,8.00053,0,0,1,11.31445-11.31446A79.47687,79.47687,0,0,1,247.9707,128ZM160,32V224a7.99935,7.99935,0,0,1-12.91113,6.31445L77.25488,176H32a16.01833,16.01833,0,0,1-16-16V96A16.01833,16.01833,0,0,1,32,80H77.25488l69.834-54.31445A7.99958,7.99958,0,0,1,160,32ZM32,160H72V96H32ZM144,48.35742,88,91.91211v72.17578l56,43.55469ZM184.94043,99.7168a7.99914,7.99914,0,0,0,.001,11.31347,23.99835,23.99835,0,0,1,0,33.93946,7.99983,7.99983,0,1,0,11.3125,11.31445,39.99722,39.99722,0,0,0,0-56.56836A7.99827,7.99827,0,0,0,184.94043,99.7168Z");
+            }
         }
 
         bool volume = false;
         private void volumn_click(object sender, RoutedEventArgs e)
         {
-            if(volume == false) {
+            if (volume == false) {
                 volumeSlider.Visibility = Visibility.Visible;
                 volume = true;
             }
-            else{
+            else {
                 volumeSlider.Visibility = Visibility.Hidden;
                 volume = false;
+              
             }
-               
+
         }
 
 
         bool isMuted = false;
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Space)
+            if (e.Key == Key.Space)
             {
                 PlayButton_Click(sender, e);
             }
@@ -286,6 +354,14 @@ namespace MediaPlayer
             {
                 isMuted = !isMuted;
                 player.IsMuted = isMuted;
+                if (isMuted)
+                {
+                    Volumn_Path.Data = Geometry.Parse("M155.51465,24.81348a7.99427,7.99427,0,0,0-8.42578.87207L77.25488,80H32A16.01833,16.01833,0,0,0,16,96v64a16.01833,16.01833,0,0,0,16,16H77.25488l69.834,54.31445A7.99958,7.99958,0,0,0,160,224V32A7.9997,7.9997,0,0,0,155.51465,24.81348ZM32,96H72v64H32ZM144,207.64258,88,164.08789V91.91211l56-43.55469Zm101.65723-61.29981a8.00053,8.00053,0,0,1-11.31446,11.31446L216,139.31445l-18.34277,18.34278a8.00053,8.00053,0,0,1-11.31446-11.31446L204.68555,128l-18.34278-18.34277a8.00053,8.00053,0,0,1,11.31446-11.31446L216,116.68555l18.34277-18.34278a8.00053,8.00053,0,0,1,11.31446,11.31446L227.31445,128Z");
+                }
+                else
+                {
+                    Volumn_Path.Data = Geometry.Parse("M247.9707,128a79.47687,79.47687,0,0,1-23.43164,56.56934,8.00053,8.00053,0,0,1-11.31445-11.31446,63.99788,63.99788,0,0,0,0-90.50976,8.00053,8.00053,0,0,1,11.31445-11.31446A79.47687,79.47687,0,0,1,247.9707,128ZM160,32V224a7.99935,7.99935,0,0,1-12.91113,6.31445L77.25488,176H32a16.01833,16.01833,0,0,1-16-16V96A16.01833,16.01833,0,0,1,32,80H77.25488l69.834-54.31445A7.99958,7.99958,0,0,1,160,32ZM32,160H72V96H32ZM144,48.35742,88,91.91211v72.17578l56,43.55469ZM184.94043,99.7168a7.99914,7.99914,0,0,0,.001,11.31347,23.99835,23.99835,0,0,1,0,33.93946,7.99983,7.99983,0,1,0,11.3125,11.31445,39.99722,39.99722,0,0,0,0-56.56836A7.99827,7.99827,0,0,0,184.94043,99.7168Z");
+                }
             }
             if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.Right)
             {
@@ -306,13 +382,30 @@ namespace MediaPlayer
 
         }
 
+        private void ShuffleButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (isPlayShuffle == false)
+            {
+                ShuffleButton_Border.Background = (Brush)new BrushConverter().ConvertFrom("#a1e7f0");
+                isPlayShuffle = true;
+
+
+
+            }
+            else
+            {
+                ShuffleButton_Border.Background = Brushes.Transparent;
+                isPlayShuffle = false;
+
+            }
+        }
         bool showlistCurrent = false;
         private void listCurrentClick(object sender, RoutedEventArgs e)
         {
             if (!showlistCurrent)
             {
                 navframe2.Visibility = Visibility.Visible;
-                ListCurrentPlaying listCurrentPlaying = new ListCurrentPlaying(listSong);
+                ListCurrentPlaying listCurrentPlaying = new ListCurrentPlaying(listSong,player);
                 navframe2!.NavigationService.Navigate(listCurrentPlaying);
                 listCurrentPlaying.SongListChanged += ListCurrentPlaying_SongListChanged;
                 showlistCurrent = true;
@@ -322,8 +415,8 @@ namespace MediaPlayer
                 navframe2.Visibility = Visibility.Hidden;
                 showlistCurrent = false;
             }
-           
-            
+
+
         }
 
         private void ListCurrentPlaying_SongListChanged(ListSong newValue)
@@ -344,5 +437,25 @@ namespace MediaPlayer
             volumeSlider.Visibility = Visibility.Hidden;
             volume = false;
         }
+
+
+
+
+        private void RepeatButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (isPlayRePeat == false)
+            {
+                RepeatButton_Border.Background = (Brush)new BrushConverter().ConvertFrom("#a1e7f0");
+                isPlayRePeat = true;
+            }
+            else
+            {
+                RepeatButton_Border.Background = Brushes.Transparent;
+                isPlayRePeat = false;
+            }
+        }
+
+           
+        
     }
 }

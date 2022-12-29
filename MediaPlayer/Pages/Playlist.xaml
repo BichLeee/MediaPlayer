@@ -7,7 +7,7 @@
       xmlns:u="clr-namespace:Ulti;assembly=Ulti"
 
       mc:Ignorable="d" 
-      d:DesignHeight="500" d:DesignWidth="670"
+      d:DesignHeight="500" d:DesignWidth="720"
       Title="Playlist" Loaded="Page_Loaded"
       xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
 
@@ -76,42 +76,57 @@
                 <Button Template="{DynamicResource ButtonTemplate1}" Focusable="False"  Style="{DynamicResource ButtonStyle}" Height="20" Width="20" Margin="5" Padding="2" Click="addMediaFile">
                     <Path Stretch="Uniform"  Fill="Black" Data="M216,88H168V40a16.01833,16.01833,0,0,0-16-16H104A16.01833,16.01833,0,0,0,88,40V88H40a16.01833,16.01833,0,0,0-16,16v48a16.01833,16.01833,0,0,0,16,16H88v48a16.01833,16.01833,0,0,0,16,16h48a16.01833,16.01833,0,0,0,16-16V168h48a16.01833,16.01833,0,0,0,16-16V104A16.01833,16.01833,0,0,0,216,88Zm0,64H160a8.00008,8.00008,0,0,0-8,8v56H104V160a8.00008,8.00008,0,0,0-8-8H40V104H96a8.00008,8.00008,0,0,0,8-8V40h48V96a8.00008,8.00008,0,0,0,8,8h56Z"/>
                 </Button>
-                <Button Template="{DynamicResource ButtonTemplate1}" Focusable="False"  Style="{DynamicResource ButtonStyle}" Height="20" Width="20" Margin="5" Padding="2" Click="deleteMediaFile">
+                <Button Template="{DynamicResource ButtonTemplate1}" Focusable="False" Click="DeleteAllItem_Click"  Style="{DynamicResource ButtonStyle}" Height="20" Width="20" Margin="5" Padding="2">
                     <Path Stretch="Uniform" Fill="Black" Data="M215.99609,48H176V40a24.02718,24.02718,0,0,0-24-24H104A24.02718,24.02718,0,0,0,80,40v8H39.99609a8,8,0,0,0,0,16h8V208a16.01833,16.01833,0,0,0,16,16h128a16.01833,16.01833,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8.00917,8.00917,0,0,1,8-8h48a8.00917,8.00917,0,0,1,8,8v8H96Zm95.99609,168h-128V64h128ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z"/>
                 </Button>
             </StackPanel>
 
         </DockPanel>
-
-
         <Grid Name="songsGrid"  Height="340" Width="600" Margin="0,10,0,0" Background="#ebfdff"  >
-            <DataGrid  x:Name="dataGrid" Style="{DynamicResource DataGridStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle2}" CellStyle="{DynamicResource DataGridCellStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" VirtualizingPanel.VirtualizationMode="Standard" MouseDoubleClick="PlayItemInPlaylist">
-               
-                <!--<DataGrid.Resources>
-                    <Style x:Key="myHeaderStyle">
-                        <Setter Property="Height" Value="30px"/>
-                        <Setter Property="Foreground" Value="#444b54"/>
-                        <Setter Property="Background" Value="#ebfdff"/>
-                        <Setter Property="Can" Value="0"/>
 
-                    </Style>
-                </DataGrid.Resources>-->
-               
+            <DataGrid  x:Name="dataGrid" Style="{DynamicResource DataGridStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle2}" CellStyle="{DynamicResource DataGridCellStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" VirtualizingPanel.VirtualizationMode="Standard" MouseDoubleClick="PlayItemInPlaylist">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Title" Width="300" CanUserResize="False" IsReadOnly="True"
-                                            Binding="{Binding title}"/>
-                    <DataGridTextColumn Header="Singer" Width="200" CanUserResize="False" IsReadOnly="True"
-                                            Binding="{Binding singer}" />
-                    <DataGridTextColumn Header="" Width="50" CanUserResize="False" IsReadOnly="True"
+                                            Binding="{Binding title}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style>
+                                <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
+                                <Setter Property="TextBlock.VerticalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Singer" Width="250" CanUserResize="False" IsReadOnly="True" FontSize="10"
+                                            Binding="{Binding singer}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style>
+                                <Setter Property="TextBlock.TextWrapping" Value="wrap"/>
+                                <Setter Property="TextBlock.VerticalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="" Width="*" CanUserResize="False" IsReadOnly="True"
                                             Binding="{Binding time}" />
-                    <DataGridCheckBoxColumn Width="*" ElementStyle="{StaticResource CheckBoxStyle1}">
-                        <DataGridCheckBoxColumn.HeaderTemplate>
-                            <DataTemplate>
-                                <CheckBox Style="{DynamicResource CheckBoxStyle1}" IsChecked="{Binding Yes,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
-                            </DataTemplate>
-                        </DataGridCheckBoxColumn.HeaderTemplate>
-                    </DataGridCheckBoxColumn>
+
                 </DataGrid.Columns>
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Delete" Click="DeleteItem_Click">
+                            <MenuItem.Icon>
+                                <Image Source="/Images/bin.png"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Play" Click="play_Click">
+                            <MenuItem.Icon>
+                                <Image Source="/Images/play.png"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Add to current playing" Click="addtoCP_Click">
+                            <MenuItem.Icon>
+                                <Image Source="/Images/add.png"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
             </DataGrid>
         </Grid>
 
