@@ -132,7 +132,6 @@ namespace MediaPlayer.Pages
             {
 
             }
-
         }
 
 
@@ -223,18 +222,32 @@ namespace MediaPlayer.Pages
                     }
                     else if (identifyFileType(_path) == TypeFile.AUDIO)
                     {
-
                         string[] info = GetAudioFileInfo(_path);
-                        song = new ISong()
+                        if (info[0] == null)
                         {
-                            title = info[0],
-                            singer = info[1],
-                            time = "",
-                            path = _path,
-                            currentTime = 0,
-                            image = "" 
-                        };
-
+                            string title = _path.Split('\\')[^1];
+                            song = new ISong()
+                            {
+                                title = title,
+                                singer = null,
+                                time = "",
+                                path = _path,
+                                currentTime = 0,
+                                image = ""
+                            };
+                        }
+                        else
+                        {
+                            song = new ISong()
+                            {
+                                title = info[0],
+                                singer = info[1],
+                                time = "",
+                                path = _path,
+                                currentTime = 0,
+                                image = ""
+                            };
+                        }
                         listSongs.Add(song);
                     }
                     else
