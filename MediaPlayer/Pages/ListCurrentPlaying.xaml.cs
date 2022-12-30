@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -74,8 +75,12 @@ namespace MediaPlayer.Pages
         {
             if (currentPlayingListView.SelectedIndex < 0 || currentPlayingListView.SelectedIndex == listSong.currentIndex)
                 return;
+            
             listSong.listSongs[listSong.currentIndex].currentTime = player.Position.TotalSeconds;
-            listSong.listSongs.Remove((ISong)currentPlayingListView.SelectedItem);
+            int index = listSong.listSongs.IndexOf(listSong.listSongs[listSong.currentIndex]);
+            if (index > currentPlayingListView.SelectedIndex)
+                listSong.currentIndex = index - 1;
+            listSong.listSongs.Remove((ISong) currentPlayingListView.SelectedItem);
 
             SongListChanged?.Invoke(listSong);
         }
