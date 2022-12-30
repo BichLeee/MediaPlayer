@@ -350,6 +350,20 @@ namespace MediaPlayer
             {
                 PlayButton_Click(sender, e);
             }
+
+            if (e.Key == Key.Left)
+            {
+                double value = progressSlider.Value - 5;
+                TimeSpan newPosition = TimeSpan.FromSeconds(value);
+                player.Position = newPosition;
+
+            }
+            if (e.Key == Key.Right)
+            {
+                double value = progressSlider.Value + 5;
+                TimeSpan newPosition = TimeSpan.FromSeconds(value);
+                player.Position = newPosition;
+            }
             if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.M)
             {
                 isMuted = !isMuted;

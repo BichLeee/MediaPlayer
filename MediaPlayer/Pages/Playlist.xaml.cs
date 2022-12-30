@@ -286,8 +286,10 @@ namespace MediaPlayer.Pages
             if (temp == null)
                 return;
             songList.listSongs.Add((ISong)temp.Clone());
+
             songList.listSongs[songList.currentIndex].currentTime = player.Position.TotalSeconds;
-           SongListChanged?.Invoke(songList);
+
+            SongListChanged?.Invoke(songList);
         }
     }
 }
