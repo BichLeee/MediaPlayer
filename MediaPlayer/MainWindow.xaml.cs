@@ -81,8 +81,8 @@ namespace MediaPlayer
                 return;
 
             ISong newFile = (ISong)CurrentPlaying.Clone();
-            newFile.currentTime = player.Position.TotalSeconds;
-
+            newFile.currentTime = player.Position.TotalSeconds % player.NaturalDuration.TimeSpan.TotalSeconds;
+            
             ISong temp = null;
             foreach (var song in recentlyList)
             {

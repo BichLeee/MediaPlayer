@@ -49,17 +49,7 @@ namespace MediaPlayer.Pages
             }
         }
 
-        private void select_recently(object sender, SelectionChangedEventArgs e)
-        {
-            if (dataGrid.SelectedIndex == -1)
-                return;
-
-            listSong.listSongs.Clear();
-
-            listSong.listSongs.Add((ISong) dataGrid.SelectedItem);
-            listSong.currentIndex = 0;
-            SongListChanged?.Invoke(listSong);
-        }
+      
 
         private void play_recently(object sender, RoutedEventArgs e)
         {
@@ -71,6 +61,18 @@ namespace MediaPlayer.Pages
             {
                 listSong.listSongs.Add(song);
             }
+            listSong.currentIndex = 0;
+            SongListChanged?.Invoke(listSong);
+        }
+
+        private void select_recently(object sender, MouseButtonEventArgs e)
+        {
+            if (dataGrid.SelectedIndex == -1)
+                return;
+
+            listSong.listSongs.Clear();
+
+            listSong.listSongs.Add((ISong)dataGrid.SelectedItem);
             listSong.currentIndex = 0;
             SongListChanged?.Invoke(listSong);
         }
