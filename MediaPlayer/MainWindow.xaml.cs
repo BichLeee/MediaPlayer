@@ -223,7 +223,7 @@ namespace MediaPlayer
             int hours = player.NaturalDuration.TimeSpan.Hours;
             int minutes = player.NaturalDuration.TimeSpan.Minutes;
             int seconds = player.NaturalDuration.TimeSpan.Seconds;
-            totalPosition.Text = $"{hours}:{minutes}:{seconds}";
+            totalPosition.Text = $"{hours}:{minutes}:{seconds}"; 
             progressSlider.Maximum = player.NaturalDuration.TimeSpan.TotalSeconds;
             end = false;
 
@@ -351,7 +351,7 @@ namespace MediaPlayer
         bool isMuted = false;
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Space)
+            if (e.Key == Key.Space || (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.P))
             {
                 PlayButton_Click(sender, e);
             }
@@ -455,6 +455,9 @@ namespace MediaPlayer
 
             volumeSlider.Visibility = Visibility.Hidden;
             volume = false;
+
+
+
         }
 
 

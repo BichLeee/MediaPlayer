@@ -47,7 +47,7 @@
         <DockPanel LastChildFill="True" Width="600" Height="120" VerticalAlignment="Center" HorizontalAlignment="Center" Background="#a1e7f0" Margin="0,5">
             <StackPanel Orientation="Horizontal">
                 <Image Width="100" Height="90" Margin="20,0,0,0" Source="{Binding listSongs[0].image,Converter={StaticResource absoluteConverter}}"/>
-                <Button Width="100" Height="90" Background="Transparent" Click="play_recently" BorderThickness="0" Margin="-100,0,0,0" Cursor="Hand">
+                <Button Width="100" Height="90" Background="Transparent" Click="play_recently" Focusable="False" BorderThickness="0" Margin="-100,0,0,0" Cursor="Hand">
 
                     <Button.Template>
                         <ControlTemplate TargetType="Button">

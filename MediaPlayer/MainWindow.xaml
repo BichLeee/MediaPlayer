@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MediaPlayer"
         xmlns:u="clr-namespace:Ulti;assembly=Ulti"
         mc:Ignorable="d"
-        Title="MainWindow" Height="645" Width="900" Loaded="Window_Loaded" KeyDown="Window_KeyDown" MouseDown="Window_MouseDown">
+        Title="MainWindow" Height="700" Width="900" Loaded="Window_Loaded" KeyDown="Window_KeyDown" MouseDown="Window_MouseDown">
 
 
     <Window.Resources>
@@ -92,7 +92,7 @@
 
     </Window.Resources>
     <Canvas>
-        <DockPanel LastChildFill="True" HorizontalAlignment="Left" Height="584" VerticalAlignment="Center" Width="900">
+        <DockPanel LastChildFill="True" HorizontalAlignment="Center" Height="624" VerticalAlignment="Top" Width="900">
             <DockPanel x:Name="footer" DockPanel.Dock="Bottom" LastChildFill="True" Height="96">
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" Width="290">
                     <!--<MediaElement MediaOpened="player_MediaOpened" MediaEnded="player_MediaEnded" Height="80" Width="115" x:Name ="player" LoadedBehavior="Manual"/>-->
@@ -166,16 +166,16 @@
                     <Label Content="Hehe"  VerticalAlignment="Center" FontFamily="Inter" Foreground="#13343d" FontSize="16" FontWeight="Bold"/>
                 </StackPanel>
                 <ListBox x:Name="sidebar" SelectionChanged="sidebar_SelectionChanged" SelectionMode="Single" BorderThickness="0" Background="#a1e7f0" Padding="0,0,-2,0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                    <u:NavButton Content="Home" Icon="M208,223.999h-.00195l-48.00586-.00634a16.01856,16.01856,0,0,1-15.99805-16v-48.001h-32v48.001a16.01856,16.01856,0,0,1-15.99805,16L48.002,223.999A15.99994,15.99994,0,0,1,32,207.999V115.53857a16.03108,16.03108,0,0,1,5.2373-11.83886l79.99317-72.73389a15.93657,15.93657,0,0,1,21.52637-.00146l80.00683,72.73584A16.03567,16.03567,0,0,1,224,115.53906v92.46a15.99994,15.99994,0,0,1-16,16ZM111.99414,143.9917h32a16.01833,16.01833,0,0,1,16,16v48.01123L208,207.999v-92.46L127.99414,42.80371,48,115.53857V207.999l47.99414-.00634v-48.001A16.01833,16.01833,0,0,1,111.99414,143.9917Z"/>
-                    <u:NavButton Navlink="/Pages/MyPlaylists.xaml" Content="My Playlists" Icon="M104,32H56A16.01833,16.01833,0,0,0,40,48V208a16.01833,16.01833,0,0,0,16,16h48a16.01833,16.01833,0,0,0,16-16V48A16.01833,16.01833,0,0,0,104,32Zm0,176-47.99951.00977L56,208V48h48ZM200,32H152a16.01833,16.01833,0,0,0-16,16V208a16.01833,16.01833,0,0,0,16,16h48a16.01833,16.01833,0,0,0,16-16V48A16.01833,16.01833,0,0,0,200,32Zm0,176-47.99951.00977L152,208V48h48Z"/>
-                    <u:NavButton Navlink="/Pages/RecentlyPlayed.xaml" Content="Recently Played"  Icon="M128,24A104,104,0,1,0,232,128,104.11791,104.11791,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.09957,88.09957,0,0,1,128,216Zm64-88a7.99977,7.99977,0,0,1-8,8H128a7.99977,7.99977,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A7.99977,7.99977,0,0,1,192,128Z"/>
-                    <u:NavButton Navlink="/Pages/Teams.xaml" Content="Teams" Margin="0,30,0,0" Icon="M121.19873,157.94751a60,60,0,1,0-66.39648,0A96.21361,96.21361,0,0,0,9.45459,192.791a8.0001,8.0001,0,1,0,13.083,9.21093,80.01734,80.01734,0,0,1,130.92187-.00488,8,8,0,1,0,13.082-9.21191A96.21491,96.21491,0,0,0,121.19873,157.94751ZM44.00049,108a44,44,0,1,1,44,44A44.04978,44.04978,0,0,1,44.00049,108Zm202.12793,95.93213a7.99869,7.99869,0,0,1-11.147-1.93506A80.16839,80.16839,0,0,0,169.522,168a8,8,0,0,1,0-16A44,44,0,1,0,157.5791,65.63818a8.00011,8.00011,0,0,1-4.333-15.40234,59.99064,59.99064,0,0,1,49.47412,107.71167,96.21347,96.21347,0,0,1,45.34327,34.83765A7.99965,7.99965,0,0,1,246.12842,203.93213Z"/>
+                    <u:NavButton Content="Home" Name="home" Icon="M208,223.999h-.00195l-48.00586-.00634a16.01856,16.01856,0,0,1-15.99805-16v-48.001h-32v48.001a16.01856,16.01856,0,0,1-15.99805,16L48.002,223.999A15.99994,15.99994,0,0,1,32,207.999V115.53857a16.03108,16.03108,0,0,1,5.2373-11.83886l79.99317-72.73389a15.93657,15.93657,0,0,1,21.52637-.00146l80.00683,72.73584A16.03567,16.03567,0,0,1,224,115.53906v92.46a15.99994,15.99994,0,0,1-16,16ZM111.99414,143.9917h32a16.01833,16.01833,0,0,1,16,16v48.01123L208,207.999v-92.46L127.99414,42.80371,48,115.53857V207.999l47.99414-.00634v-48.001A16.01833,16.01833,0,0,1,111.99414,143.9917Z"/>
+                    <u:NavButton Navlink="/Pages/MyPlaylists.xaml" Name="myplaylists" Content="My Playlists" Icon="M104,32H56A16.01833,16.01833,0,0,0,40,48V208a16.01833,16.01833,0,0,0,16,16h48a16.01833,16.01833,0,0,0,16-16V48A16.01833,16.01833,0,0,0,104,32Zm0,176-47.99951.00977L56,208V48h48ZM200,32H152a16.01833,16.01833,0,0,0-16,16V208a16.01833,16.01833,0,0,0,16,16h48a16.01833,16.01833,0,0,0,16-16V48A16.01833,16.01833,0,0,0,200,32Zm0,176-47.99951.00977L152,208V48h48Z"/>
+                    <u:NavButton Navlink="/Pages/RecentlyPlayed.xaml" Name="recently" Content="Recently Played"  Icon="M128,24A104,104,0,1,0,232,128,104.11791,104.11791,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.09957,88.09957,0,0,1,128,216Zm64-88a7.99977,7.99977,0,0,1-8,8H128a7.99977,7.99977,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A7.99977,7.99977,0,0,1,192,128Z"/>
+                    <u:NavButton Navlink="/Pages/Teams.xaml" Content="Teams" Name="myteam" Margin="0,30,0,0" Icon="M121.19873,157.94751a60,60,0,1,0-66.39648,0A96.21361,96.21361,0,0,0,9.45459,192.791a8.0001,8.0001,0,1,0,13.083,9.21093,80.01734,80.01734,0,0,1,130.92187-.00488,8,8,0,1,0,13.082-9.21191A96.21491,96.21491,0,0,0,121.19873,157.94751ZM44.00049,108a44,44,0,1,1,44,44A44.04978,44.04978,0,0,1,44.00049,108Zm202.12793,95.93213a7.99869,7.99869,0,0,1-11.147-1.93506A80.16839,80.16839,0,0,0,169.522,168a8,8,0,0,1,0-16A44,44,0,1,0,157.5791,65.63818a8.00011,8.00011,0,0,1-4.333-15.40234,59.99064,59.99064,0,0,1,49.47412,107.71167,96.21347,96.21347,0,0,1,45.34327,34.83765A7.99965,7.99965,0,0,1,246.12842,203.93213Z"/>
                 </ListBox>
                 <Line Stretch="Fill" Stroke="#ebfdff" X2="1" Width="180" Height="5px" IsEnabled="False" StrokeThickness="2" Focusable="False" Margin="0,-95,0,0"/>
             </StackPanel>
-            <StackPanel Grid.Column="1" Height="414" Width="692">
+            <StackPanel Grid.Column="1" Height="508" Width="692">
                 <Border BorderThickness="1" CornerRadius="10" BorderBrush="#13343d" Width="634">
-                    <MediaElement Height="300" Width="622" MediaOpened="player_MediaOpened" MediaEnded="player_MediaEnded" Name ="player" LoadedBehavior="Manual" >
+                    <MediaElement Height="379" Width="622" MediaOpened="player_MediaOpened" MediaEnded="player_MediaEnded" Name ="player" LoadedBehavior="Manual" Margin="5,0,5,0" >
 
                     </MediaElement>
                 </Border>
@@ -187,7 +187,7 @@
         </DockPanel>
         <Slider Style="{StaticResource Horizontal_Slider}" Visibility="Hidden" Name="volumeSlider" VerticalAlignment="Top" ValueChanged="ChangeMediaVolume" 
        Minimum="0" Maximum="1" Value="0.5" Width="60" Canvas.Left="769" Canvas.Top="507" HorizontalAlignment="Left"/>
-        <Frame x:Name="navframe" Height="489" Width="718" Visibility="Hidden" NavigationUIVisibility="Hidden" Background="#ebfdff" Canvas.Left="182" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Frame x:Name="navframe" Height="525" Width="718" Visibility="Hidden" NavigationUIVisibility="Hidden" Background="#ebfdff" Canvas.Left="182" HorizontalAlignment="Center" VerticalAlignment="Top"/>
         <Frame x:Name="navframe2" Height="489" Width="231" Visibility="Hidden"  Background="White" Canvas.Left="669" HorizontalAlignment="Left" VerticalAlignment="Center"/>
     </Canvas>
 
