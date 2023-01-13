@@ -154,7 +154,7 @@ namespace MediaPlayer
             title.Content = CurrentPlaying.title;
             perform.Content = CurrentPlaying.singer;
 
-            titleHome.Content = CurrentPlaying.title;
+            titleHome.Text = CurrentPlaying.title;
             performHome.Content = CurrentPlaying.singer;
 
             _timer = new DispatcherTimer();
@@ -208,26 +208,31 @@ namespace MediaPlayer
 
         private void progressSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            double value = progressSlider.Value;
-            TimeSpan newPosition = TimeSpan.FromSeconds(value);
-            player.Position = newPosition;
-
+            if (!end)
+            {
+                double value = progressSlider.Value;
+                TimeSpan newPosition = TimeSpan.FromSeconds(value);
+                player.Position = newPosition;
+            }
         }
 
-
+        bool end = false;
         private void player_MediaOpened(object sender, RoutedEventArgs e)
         {
+            
             int hours = player.NaturalDuration.TimeSpan.Hours;
             int minutes = player.NaturalDuration.TimeSpan.Minutes;
             int seconds = player.NaturalDuration.TimeSpan.Seconds;
             totalPosition.Text = $"{hours}:{minutes}:{seconds}";
             progressSlider.Maximum = player.NaturalDuration.TimeSpan.TotalSeconds;
-            
+            end = false;
 
         }
 
+       
         private void player_MediaEnded(object sender, RoutedEventArgs e)
         {
+            end = true;
             next();
         }
         private void nextButton(object sender, RoutedEventArgs e)

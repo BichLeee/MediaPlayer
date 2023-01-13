@@ -146,7 +146,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Height="15" Width="451">
                         <TextBlock x:Name="currentPosition" Text="0:00" FontSize="10" Foreground="#00bdd6" Padding="0,0,10,0" />
-                        <Slider Style="{StaticResource Horizontal_Slider}" Focusable="False"  x:Name="progressSlider" ValueChanged="progressSlider_ValueChanged" Foreground="#00bdd6"  Width="380" Height="18" Background="#ebfdff" BorderThickness="0" RenderTransformOrigin="0.5,0.5" IsMoveToPointEnabled="True">
+                        <Slider Style="{StaticResource Horizontal_Slider}" Focusable="False"  x:Name="progressSlider" ValueChanged="progressSlider_ValueChanged" Foreground="#00bdd6"  Width="380" Height="18" Background="#ebfdff" BorderThickness="0" RenderTransformOrigin="0.5,0.5"  IsMoveToPointEnabled="True" >
                             <Slider.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform ScaleY="-1"/>
@@ -180,7 +180,7 @@
                     </MediaElement>
                 </Border>
 
-                <Label Name="titleHome"  FontWeight="Bold" HorizontalAlignment="Center" FontSize="27" Margin="0,30,0,0">Audio title</Label>
+                <TextBlock Name="titleHome" TextWrapping="Wrap"  FontWeight="Bold" HorizontalAlignment="Center"  FontSize="27" Margin="0,30,0,0">Audio title</TextBlock>
                 <Label Name="performHome" HorizontalAlignment="Center" FontSize="16" Foreground="#aaaeb6">Singer's name</Label>
             </StackPanel>
 
