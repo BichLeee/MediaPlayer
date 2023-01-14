@@ -15,7 +15,7 @@
     </Page.Resources>
 
     <StackPanel>
-        <ListView Name="PLaylistsListView" Height="500" Background="Transparent" SelectionChanged="select_Playlists">
+        <ListView Name="PLaylistsListView" Height="500" Background="Transparent">
             <ListView.Resources>
                 <ContextMenu x:Key="listViewContextMenu">
                     <MenuItem Header="Delete" Click="deleteItem_Click">

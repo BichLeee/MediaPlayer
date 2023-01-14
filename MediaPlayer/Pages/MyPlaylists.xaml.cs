@@ -81,25 +81,7 @@ namespace MediaPlayer.Pages
         }
 
 
-        private void select_Playlists(object sender, SelectionChangedEventArgs e)
-        {
-            foreach (Window window in System.Windows.Application.Current.Windows)
-            {
-                if (window.GetType() == typeof(MainWindow))
-                {
-                    int i = PLaylistsListView.SelectedIndex;
-                    if (i == -1)
-                        return;
-
-                    var playlist = myplaylist[i];
-                    var value = new Playlist((IPlaylist)playlist,songList,player);
-                    value.PlaylistChanged += Value_PlaylistChanged;
-                    value.SongListChanged += Value_SongListChanged; ; ;
-                    (window as MainWindow).navframe.Navigate(value);
-                    return;
-                }
-            }
-        }
+      
 
         private void Value_SongListChanged(ListSong newValue)
         {
