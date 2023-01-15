@@ -19,6 +19,13 @@
     <None Remove="Images\playlist.png" />
     <None Remove="Images\save.png" />
     <None Remove="Images\upload.png" />
+    <None Remove="taglib-sharp.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="taglib-sharp.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
