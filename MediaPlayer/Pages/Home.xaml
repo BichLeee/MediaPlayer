@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MediaPlayer.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="500" d:DesignWidth="720"
+      d:DesignHeight="530" d:DesignWidth="700"
       Title="Home" Loaded="PageLoaded" >
 
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">

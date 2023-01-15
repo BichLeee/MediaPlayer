@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MediaPlayer"
         xmlns:u="clr-namespace:Ulti;assembly=Ulti"
         mc:Ignorable="d"
-        Title="MainWindow" Height="700" Width="900" Loaded="Window_Loaded" KeyDown="Window_KeyDown" MouseDown="Window_MouseDown">
+        Title="MainWindow" Height="680" Width="910" Loaded="Window_Loaded" KeyDown="Window_KeyDown" MouseDown="Window_MouseDown">
 
 
     <Window.Resources>
@@ -92,17 +92,18 @@
 
     </Window.Resources>
     <Canvas>
-        <DockPanel LastChildFill="True" HorizontalAlignment="Center" Height="624" VerticalAlignment="Top" Width="900">
+        <DockPanel LastChildFill="True" HorizontalAlignment="Center" Height="630" VerticalAlignment="Top" Width="900">
             <DockPanel x:Name="footer" DockPanel.Dock="Bottom" LastChildFill="True" Height="96">
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" Width="290">
                     <!--<MediaElement MediaOpened="player_MediaOpened" MediaEnded="player_MediaEnded" Height="80" Width="115" x:Name ="player" LoadedBehavior="Manual"/>-->
-                    <Image x:Name="icon" Source="Images/icon.png" Width="50" Margin="10"/>
-                    <StackPanel VerticalAlignment="Center">
-                        <Label Name ="title"  FontWeight="Bold" Content="Audio title" />
-                        <Label Name ="perform" Foreground="#aaaeb6" Margin="0,-8,0,0" Content="Singer"/>
+                    <Image x:Name="songicon" Panel.ZIndex="10" Source="{Binding image,Converter={StaticResource absoluteConverter}}" Width="50" Height="50" Margin="30,0,10,0"/>
+                    <Image Panel.ZIndex="0" Source="Images/icon.png" Width="50" Height="50" Margin="-60,0,10,0"/>
+                    <StackPanel VerticalAlignment="Center" Width="150">
+                        <TextBlock Name="title" TextWrapping="Wrap" MaxHeight="30"  FontWeight="Bold" FontSize="13" Margin="5,20,0,5">Audio title</TextBlock>
+                        <TextBlock Name="perform" TextWrapping="Wrap"  Foreground="#aaaeb6" FontSize="12" Margin="5,0,0,5">Singer</TextBlock>
                     </StackPanel>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Height="98" Width="92" Margin="0,0,20,0">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Height="98" Width="92" Margin="0,10,20,0">
                     <Button Template="{DynamicResource ButtonTemplate1}" Focusable="False"  Click="volumn_click" Style="{DynamicResource ButtonStyle}" Height="19" Width="19" Margin="5" Padding="1">
                         <Path x:Name="Volumn_Path" Stretch="Uniform" Fill="#00bdd6" Data="M247.9707,128a79.47687,79.47687,0,0,1-23.43164,56.56934,8.00053,8.00053,0,0,1-11.31445-11.31446,63.99788,63.99788,0,0,0,0-90.50976,8.00053,8.00053,0,0,1,11.31445-11.31446A79.47687,79.47687,0,0,1,247.9707,128ZM160,32V224a7.99935,7.99935,0,0,1-12.91113,6.31445L77.25488,176H32a16.01833,16.01833,0,0,1-16-16V96A16.01833,16.01833,0,0,1,32,80H77.25488l69.834-54.31445A7.99958,7.99958,0,0,1,160,32ZM32,160H72V96H32ZM144,48.35742,88,91.91211v72.17578l56,43.55469ZM184.94043,99.7168a7.99914,7.99914,0,0,0,.001,11.31347,23.99835,23.99835,0,0,1,0,33.93946,7.99983,7.99983,0,1,0,11.3125,11.31445,39.99722,39.99722,0,0,0,0-56.56836A7.99827,7.99827,0,0,0,184.94043,99.7168Z"/>
                     </Button>
@@ -110,12 +111,12 @@
 
                         <Path Stretch="Uniform" Fill="#00bdd6" Data="M224,128.00037a8.00008,8.00008,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8.00008,8.00008,0,0,1,224,128.00037Zm-184-56H216a8,8,0,0,0,0-16H40a8,8,0,1,0,0,16Zm176,112H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/>
                     </Button>
-                    <Button Template="{DynamicResource ButtonTemplate1}" Focusable="False"  Style="{DynamicResource ButtonStyle}" Height="18" Width="18" Margin="5" Padding="1">
+                    <Button x:Name="FullscreenBtn" Click="FullscreenBtn_Click" Template="{DynamicResource ButtonTemplate1}" Focusable="False"  Style="{DynamicResource ButtonStyle}" Height="18" Width="18" Margin="5" Padding="1">
                         <Path Stretch="Uniform" Fill="#00bdd6" Data="M208,32H48A16.01833,16.01833,0,0,0,32,48V208a16.01833,16.01833,0,0,0,16,16H208a16.01833,16.01833,0,0,0,16-16V48A16.01833,16.01833,0,0,0,208,32Zm0,176H48V48H208ZM94.34326,161.65723a8.00034,8.00034,0,0,1,0-11.31446L136.686,108H108a8,8,0,0,1,0-16h48a8.00008,8.00008,0,0,1,8,8v48a8,8,0,0,1-16,0V119.314l-42.34326,42.34327a8.00063,8.00063,0,0,1-11.31348,0Z"/>
                     </Button>
                 </StackPanel>
                 <DockPanel LastChildFill="True" Margin="0,0,0,0" Width="461">
-                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top"   Height="60px" HorizontalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="0,10,0,0"  Height="60px" HorizontalAlignment="Center">
                         <!--<Button Template="{DynamicResource ButtonTemplate1}" Focusable="False"  Style="{DynamicResource ButtonStyle}" Height="15" Width="15" Margin="30,0,30,0" Padding="1">
                             <Path Stretch="Uniform" Fill="#00bdd6"  Data="M10.59 9.17L5.41 4L4 5.41l5.17 5.17l1.42-1.41zM14.5 4l2.04 2.04L4 18.59L5.41 20L17.96 7.46L20 9.5V4h-5.5zm.33 9.41l-1.41 1.41l3.13 3.13L14.5 20H20v-5.5l-2.04 2.04l-3.13-3.13z"/>
                         </Button>-->
@@ -165,7 +166,7 @@
                     <Image x:Name="appicon" Source="Images/icon.png" Width="50" Margin="8"/>
                     <Label Content="Hehe"  VerticalAlignment="Center" FontFamily="Inter" Foreground="#13343d" FontSize="16" FontWeight="Bold"/>
                 </StackPanel>
-                <ListBox x:Name="sidebar" SelectionChanged="sidebar_SelectionChanged" SelectionMode="Single" BorderThickness="0" Background="#a1e7f0" Padding="0,0,-2,0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox x:Name="sidebar" SelectionChanged="sidebar_SelectionChanged" SelectionMode="Single" BorderThickness="0" Background="#a1e7f0" Padding="0,0,-1,0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     <u:NavButton Content="Home" Name="home" Icon="M208,223.999h-.00195l-48.00586-.00634a16.01856,16.01856,0,0,1-15.99805-16v-48.001h-32v48.001a16.01856,16.01856,0,0,1-15.99805,16L48.002,223.999A15.99994,15.99994,0,0,1,32,207.999V115.53857a16.03108,16.03108,0,0,1,5.2373-11.83886l79.99317-72.73389a15.93657,15.93657,0,0,1,21.52637-.00146l80.00683,72.73584A16.03567,16.03567,0,0,1,224,115.53906v92.46a15.99994,15.99994,0,0,1-16,16ZM111.99414,143.9917h32a16.01833,16.01833,0,0,1,16,16v48.01123L208,207.999v-92.46L127.99414,42.80371,48,115.53857V207.999l47.99414-.00634v-48.001A16.01833,16.01833,0,0,1,111.99414,143.9917Z"/>
                     <u:NavButton Navlink="/Pages/MyPlaylists.xaml" Name="myplaylists" Content="My Playlists" Icon="M104,32H56A16.01833,16.01833,0,0,0,40,48V208a16.01833,16.01833,0,0,0,16,16h48a16.01833,16.01833,0,0,0,16-16V48A16.01833,16.01833,0,0,0,104,32Zm0,176-47.99951.00977L56,208V48h48ZM200,32H152a16.01833,16.01833,0,0,0-16,16V208a16.01833,16.01833,0,0,0,16,16h48a16.01833,16.01833,0,0,0,16-16V48A16.01833,16.01833,0,0,0,200,32Zm0,176-47.99951.00977L152,208V48h48Z"/>
                     <u:NavButton Navlink="/Pages/RecentlyPlayed.xaml" Name="recently" Content="Recently Played"  Icon="M128,24A104,104,0,1,0,232,128,104.11791,104.11791,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.09957,88.09957,0,0,1,128,216Zm64-88a7.99977,7.99977,0,0,1-8,8H128a7.99977,7.99977,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A7.99977,7.99977,0,0,1,192,128Z"/>
@@ -173,22 +174,28 @@
                 </ListBox>
                 <Line Stretch="Fill" Stroke="#ebfdff" X2="1" Width="180" Height="5px" IsEnabled="False" StrokeThickness="2" Focusable="False" Margin="0,-95,0,0"/>
             </StackPanel>
-            <StackPanel Grid.Column="1" Height="508" Width="692">
-                <Border BorderThickness="1" CornerRadius="10" BorderBrush="#13343d" Width="634">
-                    <MediaElement Height="379" Width="622" MediaOpened="player_MediaOpened" MediaEnded="player_MediaEnded" Name ="player" LoadedBehavior="Manual" Margin="5,0,5,0" >
+            <StackPanel Grid.Column="1" Height="530" Width="700" Background="#ebfdff">
+                <ContentControl x:Name="videoContainer" HorizontalContentAlignment="Center" Margin="0,30,0,0" Width="630"
+                                    VerticalContentAlignment="Center">
+                    <Border BorderThickness="1" CornerRadius="2" BorderBrush="#13343d" >
+                        <MediaElement Height="380" Width="620" MediaOpened="player_MediaOpened" MediaEnded="player_MediaEnded" Name ="player" LoadedBehavior="Manual" Margin="5,0,5,0" >
+                            
+                        </MediaElement>
+                    </Border>
 
-                    </MediaElement>
-                </Border>
+                </ContentControl>
+                <Image x:Name="music_img" Source="{Binding image,Converter={StaticResource absoluteConverter}}" Width="630" Height="350" Margin="0,-380,0,0" Panel.ZIndex="10" Visibility="Visible"/>
+                <Image Source="/Images/disk.png" Panel.ZIndex="0" Width="630" Height="350" Margin="0,-380,0,0" Visibility="Visible"/>
 
-                <TextBlock Name="titleHome" TextWrapping="Wrap"  FontWeight="Bold" HorizontalAlignment="Center"  FontSize="27" Margin="0,30,0,0">Audio title</TextBlock>
-                <Label Name="performHome" HorizontalAlignment="Center" FontSize="16" Foreground="#aaaeb6">Singer's name</Label>
+                <TextBlock Name="titleHome" TextWrapping="Wrap"  FontWeight="Bold" HorizontalAlignment="Center" MaxHeight="55" MaxWidth="550" FontSize="21" Margin="0,20,0,0">Audio title</TextBlock>
+                <Label Name="performHome" HorizontalAlignment="Center" FontSize="15" Foreground="#aaaeb6">Singer's name</Label>
             </StackPanel>
 
         </DockPanel>
         <Slider Style="{StaticResource Horizontal_Slider}" Visibility="Hidden" Name="volumeSlider" VerticalAlignment="Top" ValueChanged="ChangeMediaVolume" 
-       Minimum="0" Maximum="1" Value="0.5" Width="60" Canvas.Left="769" Canvas.Top="507" HorizontalAlignment="Left"/>
-        <Frame x:Name="navframe" Height="525" Width="718" Visibility="Hidden" NavigationUIVisibility="Hidden" Background="#ebfdff" Canvas.Left="182" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-        <Frame x:Name="navframe2" Height="489" Width="231" Visibility="Hidden"  Background="White" Canvas.Left="669" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+       Minimum="0" Maximum="1" Value="0.5" Width="60" Canvas.Left="769" Canvas.Top="550" HorizontalAlignment="Left" Panel.ZIndex="10"/>
+        <Frame x:Name="navframe" Panel.ZIndex="10" Height="525" Width="718" Visibility="Hidden" NavigationUIVisibility="Hidden" Background="#ebfdff" Canvas.Left="182" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <Frame x:Name="navframe2" Panel.ZIndex="20" Height="450" Width="230" Visibility="Hidden" NavigationUIVisibility="Hidden" Background="#ebfdff" Canvas.Left="669" HorizontalAlignment="Left" VerticalAlignment="Center"/>
     </Canvas>
 
 

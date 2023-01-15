@@ -7,7 +7,7 @@
       xmlns:u="clr-namespace:Ulti;assembly=Ulti"
 
       mc:Ignorable="d" 
-      d:DesignHeight="500" d:DesignWidth="720"
+      d:DesignHeight="530" d:DesignWidth="700"
       Title="Playlist" Loaded="Page_Loaded"
       xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
 
@@ -44,9 +44,14 @@
     </Page.Resources>
 
     <StackPanel x:Name="playlistDetail" Margin="0,15">
+        <Canvas>
+            <Button x:Name="Backbutton" Background="Transparent"  BorderThickness="0" Canvas.Left="20" Canvas.Top="-5" Cursor="Hand" Click="Backbutton_Click">
+                <Image Source="/Images/back.png" Width="20" />
+            </Button>
+        </Canvas>
         <DockPanel LastChildFill="True" Width="600" Height="120" VerticalAlignment="Center" HorizontalAlignment="Center" Background="#a1e7f0" Margin="0,5">
             <StackPanel Orientation="Horizontal">
-                <Image Width="100" Height="90" Margin="20,0,0,0" Source="{Binding listSongs[0].image,Converter={StaticResource absoluteConverter}}"/>
+                <Image Name="playlistImg" Width="100" Height="90" Margin="20,0,0,0" Source="{Binding listSongs[0].image,Converter={StaticResource absoluteConverter}}"/>
 
                 <Button Width="100" Height="90" Focusable="False" Background="Transparent" BorderThickness="0" Margin="-100,0,0,0" Cursor="Hand" Click="Button_Play">
 
@@ -82,9 +87,12 @@
             </StackPanel>
 
         </DockPanel>
-        <Grid Name="songsGrid"  Height="340" Width="600" Margin="0,10,0,0" Background="#ebfdff"  >
+        <Grid Name="songsGrid"  Height="350" Width="600" Margin="0,10,0,0" Background="#ebfdff"  >
 
-            <DataGrid  x:Name="dataGrid" Style="{DynamicResource DataGridStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle2}" CellStyle="{DynamicResource DataGridCellStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" VirtualizingPanel.VirtualizationMode="Standard" MouseDoubleClick="PlayItemInPlaylist">
+            <DataGrid  x:Name="dataGrid" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled"  
+                       Style="{DynamicResource DataGridStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle2}" 
+                       CellStyle="{DynamicResource DataGridCellStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" 
+                       VirtualizingPanel.VirtualizationMode="Standard" MouseDoubleClick="PlayItemInPlaylist">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Title" Width="300" CanUserResize="False" IsReadOnly="True"
                                             Binding="{Binding title}">
@@ -95,7 +103,7 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Singer" Width="250" CanUserResize="False" IsReadOnly="True" FontSize="10"
+                    <DataGridTextColumn Header="Singer" Width="200" CanUserResize="False" IsReadOnly="True" FontSize="10"
                                             Binding="{Binding singer}">
                         <DataGridTextColumn.ElementStyle>
                             <Style>
