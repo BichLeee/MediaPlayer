@@ -10,7 +10,10 @@
 
   <ItemGroup>
     <None Remove="Images\add.png" />
+    <None Remove="Images\back.png" />
     <None Remove="Images\bin.png" />
+    <None Remove="Images\disk.jpg" />
+    <None Remove="Images\disk.png" />
     <None Remove="Images\icon.png" />
     <None Remove="Images\play.png" />
     <None Remove="Images\playlist.png" />
@@ -28,8 +31,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="taglib-sharp">
+      <HintPath>bin\Debug\net6.0-windows\taglib-sharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Images\add.png" />
+    <Resource Include="Images\back.png" />
     <Resource Include="Images\bin.png" />
+    <Resource Include="Images\disk.png" />
     <Resource Include="Images\icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -42,16 +53,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Images\chungtakhongthuocvenhau.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Images\gapnhungkhongolai.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="Images\home.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Images\onelasttime.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Images\team.png">

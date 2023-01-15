@@ -21,6 +21,11 @@ using Interface;
 using Microsoft.Win32;
 using Ulti;
 
+using TagLib;
+using System.Drawing;
+using System.Drawing.Imaging;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
+
 namespace MediaPlayer.Pages
 {
     /// <summary>
@@ -151,14 +156,17 @@ namespace MediaPlayer.Pages
                     if (identifyFileType(_path) == TypeFile.VIDEO)
                     {
                         string title = _path.Split('\\')[^1];
+                        SaveAudioImg(_path, title);
+
+                        PreviewMedia.MediaOpened += PreviewMedia_MediaOpened;
                         song = new ISong()
                         {
-                            title = title,
+                            title = title.Trim('\0'),
                             singer = null,
                             time = _time, 
                             path = _path,
                             currentTime = 0,
-                            image = ""
+                            image = "/Images/" + title.Trim('\0') + ".png"
                         };
                         _playlist.listSongs.Add(song);
                     }
@@ -166,32 +174,36 @@ namespace MediaPlayer.Pages
                     {
                        
                         string[] info = GetAudioFileInfo(_path);
+
                         if (info[0] == null)
                         {
                             string title = _path.Split('\\')[^1];
+                            SaveAudioImg(_path, title);
+
                             song = new ISong()
                             {
-                                title = title,
+                                title = title.Trim('\0'),
                                 singer = null,
                                 time = _time,
                                 path = _path,
                                 currentTime = 0,
-                                image = ""
+                                image = "/Images/" + title.Trim('\0') + ".png"
                             };
                         }
                         else
                         {
+                            SaveAudioImg(_path, info[0]);
                             song = new ISong()
                             {
-                                title = info[0],
+                                title = info[0].Trim('\0'),
                                 singer = info[1],
                                 time = _time,
                                 path = _path,
                                 currentTime = 0,
-                                image = ""
+                                image = "/Images/" + info[0].Trim('\0') + ".png"
                             };
                         }
-                        
+
                         _playlist.listSongs.Add(song);
                     }
                     else
@@ -202,13 +214,37 @@ namespace MediaPlayer.Pages
                     
                 }
                
-                PlaylistChanged?.Invoke(_playlist);
                 dataGrid.ItemsSource =null;
                 dataGrid.ItemsSource = _playlist.listSongs;
-                
+                PlaylistChanged?.Invoke(_playlist);
             }
         }
+        private void SaveAudioImg (string filename, string title)
+        {
 
+            TagLib.File file = TagLib.Mpeg4.File.Create(filename);
+            var mStream = new MemoryStream();
+            var firstPicture = file.Tag.Pictures.FirstOrDefault();
+            if (firstPicture != null)
+            {
+                byte[] pData = firstPicture.Data.Data;
+                mStream.Write(pData, 0, Convert.ToInt32(pData.Length));
+                var bm = new Bitmap(mStream, false);
+                //mStream.Dispose();
+                //mStream= null;
+                bm.SetResolution(600, 600);
+                //coverPictureBox.Image = bm;
+                string path = System.IO.Directory.GetCurrentDirectory();
+                //bm.Dispose();
+                string rs = path + "\\Images\\" + title.Trim('\0') + ".png";
+                bm.Save(rs, ImageFormat.Png);
+            }
+            else
+            {
+                //return null;
+                // set "no cover" image
+            }
+        }
         public string[] GetAudioFileInfo(string path)
         {
             path = Uri.UnescapeDataString(path);    
@@ -216,6 +252,7 @@ namespace MediaPlayer.Pages
             byte[] b = new byte[128];
             string[] infos = new string[5]; //Title; Singer; Album; Year; Comm;
             bool isSet = false;
+
 
             //Read bytes
             try
@@ -245,6 +282,7 @@ namespace MediaPlayer.Pages
 
             return infos;
         }
+
 
         private void Button_Play(object sender, RoutedEventArgs e)
         {
@@ -307,5 +345,11 @@ namespace MediaPlayer.Pages
 
             SongListChanged?.Invoke(songList);
         }
+
+        private void Backbutton_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.GoBack();
+        }
+    
     }
 }

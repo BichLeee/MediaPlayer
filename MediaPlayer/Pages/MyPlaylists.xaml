@@ -7,7 +7,7 @@
       xmlns:u="clr-namespace:Ulti;assembly=Ulti"
 
       mc:Ignorable="d" 
-      d:DesignHeight="500" d:DesignWidth="720"
+      d:DesignHeight="530" d:DesignWidth="700"
       Title="MyPlaylists" Loaded="Page_Loaded">
 
     <Page.Resources>
@@ -15,7 +15,7 @@
     </Page.Resources>
 
     <StackPanel>
-        <ListView Name="PLaylistsListView" Height="500" Background="Transparent" SelectionChanged="select_Playlists">
+        <ListView Name="PLaylistsListView" Height="530" Background="Transparent" BorderThickness="0">
             <ListView.Resources>
                 <ContextMenu x:Key="listViewContextMenu">
                     <MenuItem Header="Delete" Click="deleteItem_Click">
@@ -43,7 +43,8 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" Width="600" Height="100" VerticalAlignment="Center" HorizontalAlignment="Center" Background="#a1e7f0"  Margin="0,5" MouseLeftButtonDown="mouseleftdown">
-                        <Image Width="80" Height="70" Margin="10,0,0,0" Source="/Images/playlist.png"/>
+                        <Image Width="80" Height="70" Margin="10,0,0,0" Panel.ZIndex="10" Source="{Binding listSongs[0].image,Converter={StaticResource absoluteConverter}}"/>
+                        <Image Width="80" Height="70" Margin="-80,0,0,0" Panel.ZIndex="5" Source="/Images/playlist.png"/>
                         <TextBlock VerticalAlignment="Center" Margin="10,5,0,0">
                                     <Run Text="{Binding name}" Foreground="black" FontSize="14" FontWeight="DemiBold"/>
                                         <LineBreak/>

@@ -38,6 +38,7 @@ namespace MediaPlayer.Pages
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             dataGrid.ItemsSource = recentlyList;
+            recently_img.DataContext = recentlyList[0];
             if (listSong.listSongs == null)
             {
                 listSong = new ListSong()

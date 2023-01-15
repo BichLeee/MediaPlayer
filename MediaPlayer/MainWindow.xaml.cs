@@ -24,6 +24,8 @@ using System.Numerics;
 using System.IO;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using Window = System.Windows.Window;
 //using System.Drawing;
 
 namespace MediaPlayer
@@ -151,8 +153,12 @@ namespace MediaPlayer
             player.Play();
             player.Stop();
 
-            title.Content = CurrentPlaying.title;
-            perform.Content = CurrentPlaying.singer;
+            //BitmapImage image = new BitmapImage(new Uri(CurrentPlaying.image, UriKind.Relative));
+
+            title.Text = CurrentPlaying.title;
+            perform.Text = CurrentPlaying.singer;
+            songicon.DataContext = CurrentPlaying;
+            music_img.DataContext = CurrentPlaying;
 
             titleHome.Text = CurrentPlaying.title;
             performHome.Content = CurrentPlaying.singer;
@@ -398,26 +404,12 @@ namespace MediaPlayer
             {
                 volumeSlider.Value -= 0.05;
             }
-
-        }
-
-        private void ShuffleButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (isPlayShuffle == false)
+            if (IsFullscreen && e.Key == Key.Escape)
             {
-                ShuffleButton_Border.Background = (Brush)new BrushConverter().ConvertFrom("#a1e7f0");
-                isPlayShuffle = true;
-
-
-
-            }
-            else
-            {
-                ShuffleButton_Border.Background = Brushes.Transparent;
-                isPlayShuffle = false;
-
+                FullscreenToggle();
             }
         }
+
         bool showlistCurrent = false;
         private void listCurrentClick(object sender, RoutedEventArgs e)
         {
@@ -460,8 +452,25 @@ namespace MediaPlayer
 
         }
 
+        private void ShuffleButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (isPlayShuffle == false)
+            {
+                ShuffleButton_Border.Background = (Brush)new BrushConverter().ConvertFrom("#a1e7f0");
+                isPlayShuffle = true;
+                if (isPlayRePeat)
+                {
+                    RepeatButton_Border.Background = Brushes.Transparent;
+                    isPlayRePeat = false;
+                }
+            }
+            else
+            {
+                ShuffleButton_Border.Background = Brushes.Transparent;
+                isPlayShuffle = false;
 
-
+            }
+        }
 
         private void RepeatButton_Click(object sender, RoutedEventArgs e)
         {
@@ -469,6 +478,11 @@ namespace MediaPlayer
             {
                 RepeatButton_Border.Background = (Brush)new BrushConverter().ConvertFrom("#a1e7f0");
                 isPlayRePeat = true;
+                if (isPlayShuffle)
+                {
+                    ShuffleButton_Border.Background = Brushes.Transparent;
+                    isPlayShuffle = false;
+                }
             }
             else
             {
@@ -477,7 +491,77 @@ namespace MediaPlayer
             }
         }
 
-           
-        
+        //bool _isFullScreen = false;
+
+        //private void FullscreenBtn_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (_isFullScreen)
+        //    {
+        //        player.Width = 1820;
+        //        player.Height = 700;
+
+        //        _isFullScreen = true;
+        //    }
+        //    else
+        //    {
+        //        player.Width = 1850;
+        //        player.Height = 1850;
+        //        _isFullScreen = false;
+        //    }
+
+        //}
+        // You should use the MediaElement.IsFullWindow property instead
+        // to enable and disable full window rendering.
+        private bool _isFullscreenToggle = false;
+        public bool IsFullscreen
+        {
+            get { return _isFullscreenToggle; }
+            set { _isFullscreenToggle = value; }
+        }
+
+        private Size _previousVideoContainerSize = new Size();
+
+        private void FullscreenToggle()
+        {
+            this.IsFullscreen = !this.IsFullscreen;
+
+            if (this.IsFullscreen)
+            {
+                //TransportControlsPanel.Visibility = Visibility.Collapsed;
+
+                _previousVideoContainerSize.Width = videoContainer.ActualWidth;
+                _previousVideoContainerSize.Height = videoContainer.ActualHeight;
+
+                var width = 700;
+                var height = 480;
+
+                videoContainer.Width = width;
+                videoContainer.Height = height;
+                player.Width = width;
+                player.Height = height;
+            }
+            else
+            {
+                videoContainer.Width = _previousVideoContainerSize.Width;
+                videoContainer.Height = _previousVideoContainerSize.Height;
+                player.Width = _previousVideoContainerSize.Width;
+                player.Height = _previousVideoContainerSize.Height;
+            }
+        }
+
+        private void FullscreenBtn_Click(object sender, RoutedEventArgs e)
+        {
+            FullscreenToggle();
+        }
+
+        //private void VideoContainer_KeyUp(object sender, KeyRoutedEventArgs e)
+        //{
+        //    if (IsFullscreen && e.Key == Windows.System.VirtualKey.Escape)
+        //    {
+        //        FullscreenToggle();
+        //    }
+
+        //    e.Handled = true;
+        //}
     }
 }
